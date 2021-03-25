@@ -1,0 +1,119 @@
+<html class=""><!--<![endif]--><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <title>立即支付</title>
+    
+    <link rel="stylesheet" media="screen" href="__CDN__/assets/pay/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="__CDN__/assets/pay/font-awesome.min.css">
+
+    <style type="text/css">
+        .mainbody {
+          margin: 0 auto;
+          margin-top: 15px;
+          padding-bottom: 10px;
+          text-align: center;
+          color: #333;
+          padding-top: 6px;
+          background: #fff url(__CDN__/assets/pay/wave.png) top center repeat-x;
+          background-size: auto 6px;
+          min-height: 400px;
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo {
+          width: 103px;
+          height: 36px;
+          margin: 0 auto;
+          background: url(__CDN__/assets/pay/alipay.png) no-repeat;
+          background-size: cover;
+        }
+        .header .logo.alipay {
+          background-image: url(__CDN__/assets/pay/alipay.png);
+        }
+        .header .logo.wechat {
+          width: 130px;
+          background-image: url(__CDN__/assets/pay/wechat.png);
+        }
+
+    </style>
+    <link rel="stylesheet" media="screen" href="pay.css">
+
+
+    
+
+
+    <style type="text/css">
+        .btn{padding:3px;}
+        .tips{padding:10px 0;}
+        .tips-div{    float: left;
+            width: 80%;
+            text-align: left;
+            text-indent: 20px;}
+        .copy-tips{position:fixed;z-index:999;bottom:55%;left:55%;margin:0 0 -20px -80px;background-color:rgb(69, 168, 242);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#30000000, endColorstr=#30000000);padding:6px;}
+        .copy-tips-wrap{padding:5px 10px;text-align:center;border:1px solid #45a8f2;background-color:#fefeff;font-size:14px;border-radius:5px;}
+
+        #out_time{
+            position: absolute;
+            width: 140px;
+            height: 80px;
+            background: #ff0000;
+            z-index: 999999;
+            color: #fff;
+            text-align: center;
+            line-height: 80px;
+            font-size: 22px;
+            display: none;
+        }
+        #pay_successful{
+            position: absolute;
+            width: 140px;
+            height: 80px;
+            background: #45a8f2;
+            z-index: 999999;
+            color: #fff;
+            text-align: center;
+            line-height: 80px;
+            font-size: 22px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo alipay"></div>
+    </div>
+    <div class="mainbody">
+      
+        <!-- <div class="realprice">￥1.00</div> -->
+      <div class="tips">
+
+		<input type="hide" id="qrcodeUrl" value="{$order['qrcodeUrl']}">
+
+		<div id="pay-qrcode"></div>
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="http://www.jq22.com/js/jquery.qrcode.min.js"></script>
+		      <script type="text/javascript">
+		      $(function(){
+		          $('#pay-qrcode').qrcode($("#qrcodeUrl").val())
+		      });
+		</script>
+
+
+            <a class="btn btn-info copy_btn" data-clipboard-action="copy" data-clipboard-target="#account_name" href="{$order['alipayUrl']}">打开支付宝</a>
+        </div>
+        
+        <div class="tips"></div>
+
+
+        <div class="help">
+            支付即时到账，未到账请与我们联系<br>订单号：</div>
+    </div>
+
+
+   
+</div>
+
+</body></html>

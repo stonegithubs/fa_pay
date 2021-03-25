@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>支付7.0-支付测试</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/static/layui/css/layui.css"  media="all">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div style="padding:30px;">
+<fieldset class="layui-elem-field layui-field-title">
+  <legend>支付调试</legend>
+</fieldset>
+<form class="layui-form layui-form-pane" action="gateway.php" method="post">
+
+
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">交易金额</label>
+    <div class="layui-input-block">
+      <input type="text" name="amount" autocomplete="off" class="layui-input" value="1">
+    </div>
+  </div>
+
+ 
+ <div class="layui-form-item">
+    <label class="layui-form-label">支付类型</label>
+    <div class="layui-input-block">
+      <select name="type">
+        <option value="0">请选择支付类型</option>
+         <option value="18">跑分 支付宝</option>
+        <option value="19">跑分 微信</option>
+        <option value="20">跑分 其他</option>
+        
+        <option value="17">淘宝代付</option>
+         <option value="12">支付宝固码(支持H5)</option>
+         <option value="6">微信固码</option>        
+         <option value="16">拼多多固码</option>
+        <option value="13">微信店员</option>
+        <option value="1">支付宝转账模式</option>
+        <option value="2">支付宝转红包</option>
+        <option value="3">云闪付</option>
+        <option value="4">拉卡拉</option>
+        <option value="5">支付宝/微信转卡</option> 
+        <option value="7">农信易扫(微信支付宝)</option>
+        <option value="9">银联（农信）</option>
+         <option value="10">收钱吧（支付宝）</option>
+         <option value ="11">收钱吧（微信）</option>         
+         <option value="14">微信商户</option> 
+       
+        
+          
+
+
+        
+
+      </select>
+    </div>
+  </div>
+
+  
+
+  <div class="layui-form-item">
+    <button class="layui-btn" lay-submit="">提交</button>
+  </div>
+</form>
+</div>      
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+layui.use(['form', 'layedit', 'laydate'], function(){
+  var form = layui.form
+  ,layer = layui.layer
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate;
+  
+});
+</script>
+
+</body>
+</html>

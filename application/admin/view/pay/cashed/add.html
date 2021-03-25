@@ -1,0 +1,145 @@
+<style>
+    #select_f .dropdown-toggle{background-color: #ffffff}
+</style>
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label  class="control-label col-xs-12 col-sm-2">可提现金额:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input  disabled id="all_amount" class="form-control" step="0.01" value="{$moneyInfo['now_amount']}" type="number">
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="control-label col-xs-12 col-sm-2">冻结金额:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input  disabled id="freezed_amount" class="form-control" step="0.01" value="{$moneyInfo['freezed_amount']}" type="number">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label  class="control-label col-xs-12 col-sm-2">提现费用:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input disabled class="form-control" id="cost_amount" step="0.01" value="{$cost_amount}" type="number">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label  class="control-label col-xs-12 col-sm-2">最低提现金额:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input disabled class="form-control" step="0.01" value="{$min_cashed_amount}" type="number">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">提现金额:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input  class="form-control" id="cashed_amount" value="{$moneyInfo['now_amount']}" step="0.01" name="row[amount]" type="number">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label  class="control-label col-xs-12 col-sm-2">到账金额:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input disabled id="real_amount" class="form-control" step="0.01"  type="number">
+        </div>
+    </div>
+
+    <div class="form-group" id="select_f">
+        <label class="control-label col-xs-12 col-sm-2">选择银行卡:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="btn-group bootstrap-select form-control">
+                <select id="bankList" class="form-control selectpicker"  tabindex="-98">
+                    {foreach name="bankList" item="vo"}
+                    <option value='{$vo}' selected="selected">{$vo['bank_number']}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">银行卡号:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="bank_number" disabled class="form-control" data-rule="required" value="" type="text">
+            <input id="bank_number_post" name="row[bank_number]" type="hidden">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">开户名称:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="real_name" disabled class="form-control" data-rule="required" type="text">
+            <input id="real_name_post" name="row[real_name]" type="hidden">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">银行名称:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="bank_name" disabled class="form-control" data-rule="required"  type="text">
+            <input id="bank_name_post" name="row[bank_name]" type="hidden">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">支行名称:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="bank_name2" disabled class="form-control" data-rule="required"  type="text">
+            <input id="bank_name2_post" name="row[bank_name2]" type="hidden">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">提现密码:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input  class="form-control" data-rule="required" value=""  name="row[cash_pwd]" type="password">
+        </div>
+    </div>
+
+
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed" id="btnReset">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>
+<script src="__CDN__/assets/libs/jquery/dist/jquery.min.js"></script>
+<script>
+    function initAmount() {
+        var real_amount = $("#cashed_amount").val() - $("#cost_amount").val();
+        if(real_amount<0)
+        {
+            real_amount=0;
+        }
+        $("#real_amount").val(real_amount);
+    }
+    function initBankList() {
+        var bankInfo = $("#bankList").val();
+        console.log(bankInfo);
+        if(bankInfo!=='')
+        {
+            bankInfo = jQuery.parseJSON(bankInfo);
+            $("#bank_name").val(bankInfo.bank_name);
+            $("#bank_name2").val(bankInfo.bank_name2);
+            $("#real_name").val(bankInfo.real_name);
+            $("#bank_number").val(bankInfo.bank_number);
+            $("#bank_name_post").val(bankInfo.bank_name);
+            $("#bank_name2_post").val(bankInfo.bank_name2);
+            $("#real_name_post").val(bankInfo.real_name);
+            $("#bank_number_post").val(bankInfo.bank_number);
+        }
+    }
+
+    $(document).ready(function(){
+
+        initAmount();
+        $("#cashed_amount").on("input  propertychange",function(){
+            initAmount()
+        });
+        initBankList();
+        $("#bankList").change(function(){
+            initBankList()
+        });
+    });
+</script>

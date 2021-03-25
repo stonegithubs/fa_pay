@@ -1,0 +1,214 @@
+<style>
+    .profile-avatar-container {
+        position: relative;
+        width: 100px;
+        margin: 0 auto;
+    }
+
+    .profile-avatar-container .profile-user-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-avatar-container .profile-avatar-text {
+        display: none;
+    }
+
+    .profile-avatar-container:hover .profile-avatar-text {
+        display: block;
+        position: absolute;
+        height: 100px;
+        width: 100px;
+        background: #444;
+        opacity: .6;
+        color: #fff;
+        top: 0;
+        left: 0;
+        line-height: 100px;
+        text-align: center;
+    }
+
+    .profile-avatar-container button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+    }
+</style>
+<div class="row animated fadeInRight">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="panel-heading">
+                账户信息
+            </div>
+            <div class="panel-body">
+
+                <form id="update-form" role="form" data-toggle="validator" method="POST" action="{:url('general.profile/update')}">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="15%"></th>
+                            <th width="70%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>商户ID(appid)</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input disabled type="text" value="{$adminInfo.appid}" class="form-control" >
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>支付密钥(appsecret)</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input id="c-appsecret" type="text" name="row[appsecret]" value="{$adminInfo.appsecret}" class="form-control" data-tip="请填写商户appsecret">
+                                    </div>
+                                    <div  class="col-xs-4 col-sm-4">
+                                        <button type="button" onclick="change_appsecret()" class="btn btn-success btn-embossed">生成密钥</button>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>原提现密码</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input  type="password" name="row[cash_pwd]" value="" class="form-control" data-tip="不修改请保留空" placeholder="不修改请保留空">
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>新提现密码</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input  type="password" name="row[new_cash_pwd]" value="" class="form-control" data-tip="不修改请保留空" placeholder="不修改请保留空">
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+
+
+
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="submit" class="btn btn-success btn-embossed">确定</button>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+        <!--<div class="box box-success">
+            <div class="panel-heading">
+                账户资金
+            </div>
+            <div class="panel-body">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="15%"></th>
+                            <th width="70%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>提现密码</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col-sm-8 col-xs-12">
+                                        <input  type="text" name="row[cash_pwd]" value="" class="form-control" data-tip="不修改请保留空">
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+            </div>
+        </div>-->
+
+
+
+
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    function change_appid() {
+        $("#c-appid").val(getRandomString2(10));
+    }
+
+    function change_appsecret() {
+        $("#c-appsecret").val(getRandomString(32));
+    }
+
+
+    // 获取长度为len的随机字符串
+    function getRandomString(len) {
+        len = len || 32;
+        var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+        var maxPos = $chars.length;
+        var pwd = '';
+        for (i = 0; i < len; i++) {
+            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return pwd;
+    }
+
+    // 获取长度为len的随机字符串
+    function getRandomString2(len) {
+        len = len || 32;
+        var $chars = '1234567890';
+        var maxPos = $chars.length;
+        var pwd = '';
+        var date=new Date;
+        var year=date.getFullYear();
+        pwd+=year.toString();
+        for (i = 0; i < len; i++) {
+            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return pwd;
+    }
+
+</script>

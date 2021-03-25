@@ -1,0 +1,306 @@
+<?php
+
+namespace addons\epay\controller;
+
+use addons\epay\library\Service;
+use app\admin\model\PayOrder;
+use app\common\model\Log;
+use think\addons\Controller;
+use Exception;
+use KTools\KTools;
+use tool\Request as ToolReq;
+use app\admin\model\pay\Type;
+use think\exception\DbException;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use app\admin\model\Admin;
+
+
+//pay190521银商信付
+class Apiv9 extends Controller
+{
+
+    protected $layout = 'default';
+
+    protected $config = [];
+
+    public function _initialize()
+    {
+        parent::_initialize();
+    }
+
+    /*public function index()
+    {
+
+        $payType = 'alipaywap';//支付方式
+
+        $orderid = 'E'.date("Y-m-d H:i:s");//生成订单号
+
+        $value = '100';//订单金额
+
+        $notifyUrl = 'http://pay.kellyjob.cn/api/index';//异步回调通知地址
+        $return_url = 'http://pay.kellyjob.cn/api/index';
+        $app_id = '10047';//商户号
+
+        $key = '418601b4f1b481d0b136b178c047dd1383f75fd9';//秘钥
+
+        $api_url = 'http://www.xlpay.net/gateway';
+
+
+
+        $da = array(
+            'out_trade_no'      => $orderid,
+            'total_amount'      => $value,
+            'order_name'        => '支付测试',//商品描述
+            'spbill_create_ip'  => $_SERVER["REMOTE_ADDR"],//用户客户端IP
+            'notify_url'        => $notifyUrl,
+            'return_url'        => $return_url,//同步回调跳转地址
+            'remark'            => 'recharge'
+        );
+
+        $data=array();
+        $data['app_id'] = $app_id;
+        $data['method'] = $payType;
+        $data['sign_type'] = 'MD5';
+        $data['version'] = '1.0';
+        $data['content'] = json_encode($da);
+        $data['sign'] = md5(urldecode('app_id='.$data['app_id'].'&content='.$data['content'].'&method='.$data['method'].'&version='.$data['version'].'&key='.$key));
+
+        $res = $this->request_post($api_url, $data);
+        echo $res;
+        //exit(ToolReq::createForm($api_url, $data));
+
+    }*/
+
+    public function submit()
+    {
+
+        $out_trade_no = $this->request->request("out_trade_no");
+        $amount = $this->request->request('amount');
+        $title = $this->request->request("title");
+
+        //验证支付方式是否可用
+        $PayTypeM  = new Type();
+        $payTypeInfo = false;
+        $paytype = 'alipay_wap_v6';
+        try {
+            $payTypeInfo = $PayTypeM->where('type', $paytype)->where('status',1)->find();
+        } catch (DataNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
+        } catch (DbException $e) {
+        }
+        if (!$payTypeInfo)
+        {
+            $this->error('支付通道不可用');
+        }
+        $payTypeInfo['config'] = json_decode($payTypeInfo['config'],true);
+        $this->config = $payTypeInfo['config'];
+
+
+        $app_id = $this->config['app_id'];
+        $key = $this->config['key'];
+
+        $da = array(
+            'out_trade_no'      => $out_trade_no,
+            'total_amount'      => $amount,
+            'order_name'        => $title,//商品描述
+            'spbill_create_ip'  => $_SERVER["REMOTE_ADDR"],//用户客户端IP
+            'notify_url'        => $this->config['sys_notifyurl'],
+            'return_url'        => $this->config['sys_returnurl'],//同步回调跳转地址
+            'remark'            => 'recharge'
+        );
+
+        $data=array();
+        $api_url = $this->config['api_url'];
+        $data['app_id'] = $app_id;
+        $data['method'] = 'alipaywap';//支付方式
+        $data['sign_type'] = 'MD5';
+        $data['version'] = '1.0';
+        $data['content'] = json_encode($da);
+        $data['sign'] = md5(urldecode('app_id='.$data['app_id'].'&content='.$data['content'].'&method='.$data['method'].'&version='.$data['version'].'&key='.$key));
+
+        $res = $this->request_post($api_url, $data);
+        echo $res;
+
+    }
+
+
+    /**
+     * 支付成功回调
+     */
+    public function notifyx()
+    {
+
+        $logM = new Log();
+//        $logM->addLog(json_encode($this->request->param()),'api_v3/notifyx');
+        //验证支付方式是否可用
+        $PayTypeM  = new Type();
+        $payTypeInfo = false;
+        try {
+            $payTypeInfo = $PayTypeM->where('type', 'alipay_wap_v6')->find();
+        } catch (DataNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
+        } catch (DbException $e) {
+        }
+        if (!$payTypeInfo)
+        {
+            $this->error('支付通道不可用');
+        }
+        $payTypeInfo['config'] = json_decode($payTypeInfo['config'],true);
+        $this->config = $payTypeInfo['config'];
+
+
+        $payData = array();
+        $payData['out_trade_no'] = $this->request->request('out_trade_no','');
+        $payData['trade_no'] = $this->request->request('trade_no','');
+        $payData['pay_time'] = $this->request->request('pay_time','');
+        $payData['total_amount'] = $this->request->request('total_amount','');
+        $payData['status'] = $this->request->request('status','');
+
+        if (isset($payData['status']) && $payData['status']=="1")
+        {
+            if (1)
+            {
+                try {
+
+                    $logM->addLog('ok','api_v3/notifyx');
+                    $OrderM = new PayOrder();
+
+                    //修改订单状态
+                    $out_trade_no = $payData['out_trade_no'];
+                    $myOrder = array();
+                    $myOrder['sys_order_id'] = $payData['trade_no'];
+                    $myOrder['status'] = 2;//已经支付
+                    $myOrder['paydate'] = date('Y-m-d H:i:s',$payData['pay_time']);
+                    $myOrder['realprice'] = $payData['total_amount'];
+                    $myOrder['paytime'] = $myOrder['pay_time'];
+                    $where = array();
+                    $where['out_order_id'] = $out_trade_no;
+                    $where['status'] = array('in','0,1');
+                    $OrderM->where($where)->update($myOrder);
+
+                    //订单详情
+                    $where = array();
+                    $where['out_order_id'] = $out_trade_no;
+                    $orderInfo = $OrderM->where($where)->find();
+
+
+                    //下发商户通知
+                    $result = \app\admin\library\Service::notify($orderInfo['id']);
+
+                    $APiC = new Api();
+                    //扣除费率及记账
+                    $APiC->dealServiceCharge($orderInfo);
+                    exit("success");
+
+
+
+                    //你可以在此编写订单逻辑
+                } catch (Exception $e) {
+
+                }
+
+            }
+
+        }
+        exit("fail");
+    }
+
+    /**
+     * 支付成功返回
+     */
+    public function returnx()
+    {
+
+        $logM = new Log();
+        $logM->addLog(json_encode($this->request->param()),'api_v3/returnx');
+
+        $returnArray = array( // 返回字段
+            "memberid" => $_REQUEST["memberid"], // 商户ID
+            "orderid" =>  $_REQUEST["orderid"], // 订单号
+            "amount" =>  $_REQUEST["amount"], // 交易金额
+            "datetime" =>  $_REQUEST["datetime"], // 交易时间
+            "transaction_id" =>  $_REQUEST["transaction_id"], // 流水号
+            "returncode" => $_REQUEST["returncode"]
+        );
+        //验证支付方式是否可用
+        $PayTypeM  = new Type();
+        $payTypeInfo = false;
+        try {
+            $payTypeInfo = $PayTypeM->where('type', 'alipay_wap_v6')->find();
+        } catch (DataNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
+        } catch (DbException $e) {
+        }
+        if (!$payTypeInfo)
+            $this->error('error');
+        $md5key = $payTypeInfo['Md5key'];
+        ksort($returnArray);
+        reset($returnArray);
+        $md5str = "";
+        foreach ($returnArray as $key => $val) {
+            $md5str = $md5str . $key . "=" . $val . "&";
+        }
+        $sign = strtoupper(md5($md5str . "key=" . $md5key));
+        if ($sign == $_REQUEST["sign"]) {
+            if ($_REQUEST["returncode"] == "00") {
+                try {
+                    $returnData = $this->request->param();
+                    $out_order_id = $returnData['orderid'];
+                    $OrderM = new PayOrder();
+                    $orderInfo = $OrderM->where('out_order_id',$out_order_id)->find();
+                    if (!$orderInfo)
+                        $this->error('error');
+                        $params = [
+                            'appid'       => $orderInfo['appid'],
+                            'paytype'       => $orderInfo['paytype'],
+                            'title'       => $orderInfo['title'],
+                            'out_order_id' => $orderInfo['out_order_id'],
+                            'sys_order_id' => $orderInfo['sys_order_id'],
+                            'realprice'    => $orderInfo['realprice'],
+                            'paytime'      => $orderInfo['paytime'],
+                            'paydate'      => $orderInfo['paydate'],
+                            'extend'       => $orderInfo['extend'],
+                        ];
+                    $adminInfo = Admin::get($orderInfo['admin_id']);
+                    $appsecret = $adminInfo['appsecret'];
+                    $params['sign'] = md5(\app\admin\library\Service::build_sign_str($params).$appsecret);
+
+                    exit(ToolReq::createForm($orderInfo['returnurl'], $params,'GET'));
+
+                } catch (Exception $e) {
+
+                }
+
+            }
+        }
+        return;
+    }
+
+
+    public function request_post($url = '', $param = '') {
+
+        $headers = array('Content-Type: application/x-www-form-urlencoded');
+        $curl = curl_init(); // 启动一个CURL会话
+        curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
+        curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']); // 模拟用户使用的浏览器
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
+        curl_setopt($curl, CURLOPT_AUTOREFERER, 1); // 自动设置Referer
+        curl_setopt($curl, CURLOPT_POST, 1); // 发送一个常规的Post请求
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($param)); // Post提交的数据包
+        curl_setopt($curl, CURLOPT_TIMEOUT, 30); // 设置超时限制防止死循环
+        curl_setopt($curl, CURLOPT_HEADER, 0); // 显示返回的Header区域内容
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($curl); // 执行操作
+        if (curl_errno($curl)) {
+//            echo 'Errno'.curl_error($curl);//捕抓异常
+            return false;
+        }
+        curl_close($curl); // 关闭CURL会话
+        return $result;
+    }
+
+}
