@@ -160,7 +160,17 @@ class Pay extends Frontend
             $postData['returnurl'] = $data['returnurl'];
 			$postData['key'] = '123';
 
-            exit(ToolReq::createForm($payTypeInfo['config']['gateway_url'], $postData));
+			//如果是Bipay支付方式，则根据extend中method的值跳转url
+            $gateway_url = $payTypeInfo['config']['gateway_url'];
+            if(strtolower($data['paytype']) == 'bipay'){
+                $extend = json_decode($data['extend'],true);
+                if(in_array($extend['method'],['create','transfer'])){
+                    $gateway_url = str_replace('submit',$extend['method'],$payTypeInfo['config']['gateway_url']);
+                }else{
+                    $this->error('非法的method');
+                }
+            }
+            exit(ToolReq::createForm($gateway_url, $postData));
         }
         $this->error('支付通道异常');
 

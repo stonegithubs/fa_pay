@@ -15,7 +15,7 @@ if($_POST){
         'notifyurl' => isset($_POST['notifyurl']) ? $_POST['notifyurl'] : '', // 异步通知地址
     ];
 
-// 参数检查
+    // 参数检查
 
     // md5 签名
     $sign_str = Request::build_sign_str($data). $config['appsecret'];
@@ -27,10 +27,10 @@ if($_POST){
 
 
 $data = [
-    'price' => 0.01, // 订单金额，单位元
+    'price' => 10, // 订单金额，单位元
     'title' => 'goods', // 商品名称
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
-    'extend' => '', // 商户自定义字段
+    'extend' => '{"method":"create"}', // 商户自定义字段
     'returnurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/returnx.php", // 前端通知地址
     'notifyurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/notifyx.php", // 异步通知地址
 ];
@@ -91,7 +91,7 @@ $data = [
                         </div>
                         <div class="form-group col-sm-12">
                             <label for="input5" class="form-label control-label">自定义字段</label>
-                            <input type="text" name="extend" value="<?=$data['extend']?>" class="form-control" id="input5" placeholder="请输入自定义字段...">
+                            <input type="text" name="extend" value='<?=$data['extend']?>' class="form-control" id="input5" placeholder="请输入自定义字段...">
                         </div>
 
 

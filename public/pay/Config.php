@@ -4,10 +4,10 @@
 
     $config = [
 
-    'appid' => '20191394959278', // 商户应用id
-    'appsecret' => '2ehdzGMajPeKpsiM7wBjrwdWzaQMN5Dm', // 商户MD5签名密钥
-    'gateway_url' => 'http://www.xhd9.com/api/pay/submit ', // 创建订单接口
-    'paytype'=>'alipay_wap'
+    'appid' => '20212048471426', // 商户应用id
+    'appsecret' => 'YyiHPpdaMZjckWEJ4j6TN2wHFJhNtw7T', // 商户MD5签名密钥
+    'gateway_url' => 'http://www.fapay.com/api/pay/submit ', // 创建订单接口
+    'paytype'=>'bipay'
     ];
 
     ?>
