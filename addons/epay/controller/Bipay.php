@@ -2,6 +2,7 @@
 
 namespace addons\epay\controller;
 
+use fast\Http;
 use addons\epay\library\Service;
 use app\admin\model\PayOrder;
 use app\common\model\Log;
@@ -25,22 +26,88 @@ class Bipay extends Controller
 
     protected $layout = 'default';
 
-
     protected $config = [];
 
     public function _initialize()
     {
         parent::_initialize();
+
+        try {
+            $logM = new Log();
+            $ipaddr = ToolReq::getIp();
+            $logM->addLog($ipaddr."|".json_encode($this->request->param()),'api_v20/submit');
+        } catch (DataNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
+        } catch (DbException $e) {
+        }
+
+        //验证支付方式是否可用
+        $PayTypeM  = new Type();
+        $payTypeInfo = false;
+        $paytype = 'bipay';
+        try {
+            $payTypeInfo = $PayTypeM->where('type', $paytype)->where('status',1)->find();
+        } catch (DataNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
+        } catch (DbException $e) {
+        }
+        if (!$payTypeInfo)
+        {
+            $this->error('支付通道不可用');
+        }
+        $payTypeInfo['config'] = json_decode($payTypeInfo['config'],true);
+        $this->config = $payTypeInfo['config'];
     }
 
     public function create()
     {
-        echo 88888;
+        $extend = $this->request->request("extend");
+        $extend = json_decode($extend,true);
+
+        if(empty($extend['value']) || !is_string($extend['value'])){
+            $this->error('非法的value');
+        }
+
+        $params = array(
+            "coin_symbol" => $extend['coin_symbol'],
+            "value" => $extend['value'],
+            "call_url" => $this->config['notifyUrl'],
+        );
+
+        $params= $this->filterPara($params);
+        $params =  $this->buildRequestPara($params);
+
+        exit($this->curl_post($this->config['createUrl'],$params));
     }
 
     public function transfer()
     {
-       echo 6666;
+        $extend = $this->request->request("extend");
+        $extend = json_decode($extend,true);
+
+        if(empty($extend['amount'])){
+            $this->error('非法的amount');
+        }
+
+        if(empty($extend['to_address'])){
+            $this->error('非法的to_address');
+        }
+
+        if(empty($extend['withdraw_record_Id'])){
+            $this->error('非法的withdraw_record_Id');
+        }
+
+        $params = array(
+            "coin_symbol" => $extend['coin_symbol'],
+            "amount" => $extend['amount'],
+            "to_address" => $extend['to_address'],
+            "withdraw_record_Id" => $extend['withdraw_record_Id']
+        );
+
+        $params= $this->filterPara($params);
+        $params =  $this->buildRequestPara($params);
+
+        exit($this->curl_post($this->config['transferUrl'],$params));
     }
 
 
@@ -239,6 +306,101 @@ class Bipay extends Controller
         return;
     }
 
+    // curl for request
+    private  function curl_post($url, $post_data = '', $timeout = 5)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        if ($post_data != '') {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $file_contents = curl_exec($ch);
+        curl_close($ch);
+        return $file_contents;
+    }
 
+    /**
+     * 除去数组中的空值和签名参数
+     * @param $para 签名参数组
+     * return 去掉空值与签名参数后的新签名参数组
+     */
+    public function paraFilter($para) {
+        $para_filter = array();
+        foreach ($para as $key => $val) {
+            if($key == "sign" || $val == "")continue;
+            else    $para_filter[$key] = $para[$key];
+        }
+        return $para_filter;
+    }
+    /**
+     * 对数组排序
+     * @param $para 排序前的数组
+     * return 排序后的数组
+     */
+    public function argSort($para) {
+        ksort($para);
+        reset($para);
+        return $para;
+    }
+    /**
+     * 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
+     * @param $para 需要拼接的数组
+     * return 拼接完成以后的字符串
+     */
+    public function createLinkstring($para) {
+        $arg  = "";
+        foreach ($para as $key => $val) {
+            $arg.=$key."=".$val."&";
+        }
+        //去掉最后一个&字符
+        $arg = substr($arg,0,strlen($arg)-1);
+        //如果存在转义字符，那么去掉转义
+        if(get_magic_quotes_gpc()){
+            $arg = stripslashes($arg);
+        }
+        return $arg;
+    }
+    /**
+     * 生成md5签名字符串
+     * @param $prestr 需要签名的字符串
+     * @param $key 私钥
+     * return 签名结果
+     */
+    public function md5Sign($prestr, $key) {
+        $prestr = $prestr . $key;
+        return md5($prestr);
+    }
 
+    public function filterPara($para_temp){
+        $para_filter = $this->paraFilter($para_temp);//除去待签名参数数组中的空值和签名参数
+        return $this->argSort($para_filter);//对待签名参数数组排序
+    }
+    /**
+     * 生成签名结果
+     * @param $para_sort 已排序要签名的数组
+     * @return string 签名结果字符串
+     */
+    public function buildRequestMysign($para_sort) {
+        //把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
+        $prestr = $this->createLinkstring($para_sort);
+        $mysign = "";
+        $mysign = $this->md5Sign($prestr, $this->config['md5key']);
+
+        return $mysign;
+    }
+    /**
+     * 生成要发送的参数数组
+     * @param $para_temp 请求前的参数数组
+     * @return 要请求的参数数组
+     */
+    public function buildRequestPara($para_temp) {
+        $para_sort = $this->filterPara($para_temp);//对待签名参数进行过滤
+        $para_sort['sign'] = $this->buildRequestMysign($para_sort);//生成签名结果，并与签名方式加入请求提交参数组中
+        return $para_sort;
+    }
 }

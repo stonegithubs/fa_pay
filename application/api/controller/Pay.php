@@ -164,11 +164,18 @@ class Pay extends Frontend
             $gateway_url = $payTypeInfo['config']['gateway_url'];
             if(strtolower($data['paytype']) == 'bipay'){
                 $extend = json_decode($data['extend'],true);
+
                 if(in_array($extend['method'],['create','transfer'])){
                     $gateway_url = str_replace('submit',$extend['method'],$payTypeInfo['config']['gateway_url']);
                 }else{
                     $this->error('非法的method');
                 }
+
+                if(!in_array($extend['coin_symbol'],['BTC','ETH'])){
+                    $this->error('非法的coin_symbol');
+                }
+
+                $postData['extend'] = $data['extend'];
             }
             exit(ToolReq::createForm($gateway_url, $postData));
         }

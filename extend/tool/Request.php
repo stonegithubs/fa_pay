@@ -231,7 +231,7 @@ class Request
         $html .= '<form action="' . $url . '" method="' . $method . '" name="form" enctype="application/json">';
         if(is_array($params) && !empty($params)){
             foreach ($params as $key=>$value){
-                $html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
+                $html .= '<input type="hidden" name="' . $key . '" value=\'' . $value . '\'>';
             }
         }
         $html .= '</form>';

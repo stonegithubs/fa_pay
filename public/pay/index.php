@@ -30,7 +30,18 @@ $data = [
     'price' => 10, // 订单金额，单位元
     'title' => 'goods', // 商品名称
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
-    'extend' => '{"method":"create"}', // 商户自定义字段
+//    'extend' => json_encode([
+//            'method' => 'create',
+//            'coin_symbol' => 'BTC',
+//            'value' => '123456',
+//    ]), // 商户自定义字段
+    'extend' => json_encode([
+        'method' => 'transfer',
+        'coin_symbol' => 'BTC',
+        'amount' => '123456',
+        'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH',
+        'withdraw_record_Id' => '123456',
+    ]), // 商户自定义字段
     'returnurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/returnx.php", // 前端通知地址
     'notifyurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/notifyx.php", // 异步通知地址
 ];
