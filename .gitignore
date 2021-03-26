@@ -1,0 +1,8 @@
+.DS_Store
+.idea
+.env
+.env.example
+/runtime
+public/upload/*
+application/database.php
+
