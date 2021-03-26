@@ -165,7 +165,6 @@ class Bipay extends Controller
             $where['out_order_id'] = $out_trade_no;
             $orderInfo = $OrderM->where($where)->find();
 
-
             //下发商户通知
             $result = \app\admin\library\Service::notify($orderInfo['id']);
 
