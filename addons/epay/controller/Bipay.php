@@ -35,7 +35,7 @@ class Bipay extends Controller
         try {
             $logM = new Log();
             $ipaddr = ToolReq::getIp();
-            $logM->addLog($ipaddr."|".json_encode($this->request->param()),'api_v20/submit');
+            $logM->addLog($ipaddr."|".json_encode($this->request->param()),'bipay/submit');
         } catch (DataNotFoundException $e) {
         } catch (ModelNotFoundException $e) {
         } catch (DbException $e) {
@@ -97,11 +97,13 @@ class Bipay extends Controller
             $this->error('非法的withdraw_record_Id');
         }
 
+        $out_order_id = $this->request->request("out_order_id");
+
         $params = array(
             "coin_symbol" => $extend['coin_symbol'],
             "amount" => $extend['amount'],
             "to_address" => $extend['to_address'],
-            "withdraw_record_Id" => $extend['withdraw_record_Id']
+            "withdraw_record_Id" => $out_order_id
         );
 
         $params= $this->filterPara($params);
@@ -116,122 +118,68 @@ class Bipay extends Controller
      */
     public function notifyx()
     {
-		 try {
-             $logM = new Log();
-             $ipaddr = ToolReq::getIp();
-           	if($ipaddr != '58.218.213.7')
-            {
-            	die(500);
-            }
-        	 $logM->addLog($ipaddr."|".json_encode($this->request->param()),'api_v20/notifyx');
-        } catch (DataNotFoundException $e) {
-        } catch (ModelNotFoundException $e) {
-        } catch (DbException $e) {
+        $params = $this->request->request();
+
+        if(!isset($params['sign'])){
+            $this->error('sign not set');
         }
-       
-        //验证支付方式是否可用
-        $PayTypeM  = new Type();
-        $payTypeInfo = false;
+
+        $sign = $params['sign'];
+
+        $params_final = $this->filterPara($params);
+
+        $sign_str =  $this->buildRequestMysign($params_final);
+
+        if ($sign_str !== $sign ) {
+            $this->error('sign error');
+        }
+
+        $withdraw_record_Id = $params['withdraw_record_Id'];
+        $notify_type = $params['notify_type'];
+//        $from_address= $params['from_address'];
+        $to_address= $params['address'];
+        $amount = $params['amount'];
+        $txid = $params['txid']; //链上交易ID
+        $coin_symbol = $params['coin_symbol'];
+        $fee = $params['fee'];
+
         try {
-            $payTypeInfo = $PayTypeM->where('type', 'alipay_v20')->find();
-        } catch (DataNotFoundException $e) {
-        } catch (ModelNotFoundException $e) {
-        } catch (DbException $e) {
+            //$logM->addLog('ok','api_v3/notifyx');
+            $OrderM = new PayOrder();
+
+            //修改订单状态
+            $out_trade_no = $withdraw_record_Id;
+            $myOrder = array();
+            $myOrder['sys_order_id'] = $txid;
+            $myOrder['status'] = 2;//已经支付
+            $myOrder['paydate'] = date('Y-m-d H:i:s',time());
+            $myOrder['realprice'] = $amount;
+            $myOrder['paytime'] = time();
+            $where = array();
+            $where['out_order_id'] = $out_trade_no;
+            $where['status'] = array('in','0,1');
+            $OrderM->where($where)->update($myOrder);
+
+            //订单详情
+            $where = array();
+            $where['out_order_id'] = $out_trade_no;
+            $orderInfo = $OrderM->where($where)->find();
+
+
+            //下发商户通知
+            $result = \app\admin\library\Service::notify($orderInfo['id']);
+
+            $APiC = new Api();
+            //扣除费率及记账
+            $APiC->dealServiceCharge($orderInfo);
+
+
+
+            //你可以在此编写订单逻辑
+            exit("success");
+        } catch (Exception $e) {
+
         }
-        if (!$payTypeInfo)
-        {
-            $this->error('支付通道不可用');
-        }
-        $payTypeInfo['config'] = json_decode($payTypeInfo['config'],true);
-        $this->config = $payTypeInfo['config'];
-
-
-        /*{
-            "memberid": "10076",
-            "orderid": "E201905052140126956",
-            "transaction_id": "20190505214012995651",
-            "amount": "1.0000",
-            "datetime": "20190505214156",
-            "returncode": "00",
-            "sign": "593E0B64D40EED3BB9DD0B7CEF0E8DDF",
-            "attach": "1234|456",
-            "addon": "epay",
-            "controller": "apiv3",
-            "action": "notifyx"
-        }*/
-
-
-
-        $payData = array();
-        $payData['merchantNum'] = $this->request->request('merchantNum','');
-        $payData['orderNo'] = $this->request->request('orderNo','');
-        $payData['platformOrderNo'] = $this->request->request('platformOrderNo','');
-        $payData['amount'] = $this->request->request('amount','');
-        $payData['attch'] = $this->request->request('attch','');
-        $payData['state'] = $this->request->request('state','');
-      	$payData['payTime'] = $this->request->request('payTime','');
-      	$payData['actualPayAmount'] = $this->request->request('actualPayAmount','');
-
-
-
-        $Md5key = $this->config['Md5key'];
-        ksort($payData);
-        reset($payData);
-        $md5str = "";
-        foreach ($payData as $key => $val) {
-            $md5str = $md5str . $key . "=" . $val . "&";
-        }
-        $payData['sign'] = md5($payData['state'] . $payData['merchantNum'] . $payData['orderNo'] . $payData['amount'] . $Md5key);
-        $sign = $this->request->request('sign','');
-        if ($sign===$payData['sign'])//
-        {
-            if (1)
-            {
-                try {
-
-                    //$logM->addLog('ok','api_v3/notifyx');
-                    $OrderM = new PayOrder();
-
-                    //修改订单状态
-                    $out_trade_no = $payData['orderNo'];
-                    $myOrder = array();
-                    $myOrder['sys_order_id'] = $payData['platformOrderNo'];
-                    $myOrder['status'] = 2;//已经支付
-                    $myOrder['paydate'] = $payData['payTime'];
-                    $myOrder['realprice'] = $payData['actualPayAmount'];
-                    $myOrder['paytime'] = strtotime($myOrder['paydate']);
-                    $where = array();
-                    $where['out_order_id'] = $out_trade_no;
-                    $where['status'] = array('in','0,1');
-                    $OrderM->where($where)->update($myOrder);
-
-                    //订单详情
-                    $where = array();
-                    $where['out_order_id'] = $out_trade_no;
-                    $orderInfo = $OrderM->where($where)->find();
-
-
-                    //下发商户通知
-                    $result = \app\admin\library\Service::notify($orderInfo['id']);
-
-                    $APiC = new Api();
-                    //扣除费率及记账
-                    $APiC->dealServiceCharge($orderInfo);
-
-
-
-                    //你可以在此编写订单逻辑
-                  	exit("success");
-                } catch (Exception $e) {
-
-                }
-
-            }
-            exit("ok");
-        }else{
-            $this->error('error');
-        }
-
     }
 
     /**
