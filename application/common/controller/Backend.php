@@ -109,7 +109,7 @@ class Backend extends Controller
 
     public function _initialize()
     {
-        if ($_SERVER['SERVER_ADDR'] != '47.90.125.125' && $_SERVER['SERVER_ADDR'] != '127.0.0.1' && $_SERVER['SERVER_ADDR'] !='172.31.94.87')
+        if ($_SERVER['SERVER_ADDR'] != '47.57.136.238' && $_SERVER['SERVER_ADDR'] != '127.0.0.1' && $_SERVER['SERVER_ADDR'] !='172.31.94.87')
         {
            // exit();
         }
