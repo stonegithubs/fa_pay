@@ -61,6 +61,7 @@ class Bipay extends Controller
 
     public function create()
     {
+        $appid = $this->request->request("appid");
         $extend = $this->request->request("extend");
         $extend = json_decode($extend,true);
 
@@ -69,6 +70,7 @@ class Bipay extends Controller
         }
 
         $params = array(
+            "appid" => $appid,
             "coin_symbol" => $extend['coin_symbol'],
             "value" => $extend['value'],
             "call_url" => $this->config['notifyUrl'],

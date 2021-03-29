@@ -151,6 +151,7 @@ class Pay extends Frontend
         if (!empty($paytype))
         {
 
+            $postData['appid'] = $data['appid'];
             $postData['out_trade_no'] = $data['out_order_id'];
             $postData['title'] = $data['title'];
             $postData['amount'] = $data['realprice'];
