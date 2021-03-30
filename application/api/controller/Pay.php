@@ -172,7 +172,7 @@ class Pay extends Frontend
                     $this->error('非法的method');
                 }
 
-                if(!in_array($extend['coin_symbol'],['BTC','ETH'])){
+                if(!in_array($extend['coin_symbol'],['BTC','ETH','USDT'])){
                     $this->error('非法的coin_symbol');
                 }
 
