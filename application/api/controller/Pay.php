@@ -152,7 +152,7 @@ class Pay extends Frontend
         {
 
             $postData['appid'] = $data['appid'];
-            $postData['out_trade_no'] = $data['out_order_id'];
+            $postData['out_order_id'] = $data['out_order_id'];
             $postData['title'] = $data['title'];
             $postData['amount'] = $data['realprice'];
             $postData['type'] = 'alipay';

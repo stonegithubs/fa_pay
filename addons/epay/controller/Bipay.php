@@ -123,7 +123,7 @@ class Bipay extends Controller
         $params = $this->request->request();
 
         if(!isset($params['sign'])){
-            $this->error('sign not set');
+            exit(json_encode(['code'=>-1,'msg'=>'sign not set']));
         }
 
         $sign = $params['sign'];
@@ -133,7 +133,7 @@ class Bipay extends Controller
         $sign_str =  $this->buildRequestMysign($params_final);
 
         if ($sign_str !== $sign ) {
-            $this->error('sign error');
+            exit(json_encode(['code'=>-1,'msg'=>'sign error']));
         }
 
         $withdraw_record_Id = $params['withdraw_record_Id'];
@@ -177,7 +177,7 @@ class Bipay extends Controller
 
 
             //你可以在此编写订单逻辑
-            exit("success");
+            exit(json_encode(['code'=>0,'msg'=>'success']));
         } catch (Exception $e) {
 
         }
@@ -282,6 +282,7 @@ class Bipay extends Controller
         $para_filter = array();
         foreach ($para as $key => $val) {
             if($key == "sign" || $val == "")continue;
+            if($key == "s" || $val == "")continue;
             else    $para_filter[$key] = $para[$key];
         }
         return $para_filter;
