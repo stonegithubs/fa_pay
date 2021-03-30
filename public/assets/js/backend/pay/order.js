@@ -35,7 +35,15 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                         },
 
                         {field: 'appid', title: '商户ID',formatter: Table.api.formatter.search},
-
+                        {
+                            field: 'coin_symbol',
+                            title: '币种',
+                            operate: 'BETWEEN',
+                            sortable: true,
+                            cellStyle: {
+                                css: {"color": "#e74c3c"}
+                            }
+                        },
                         {
                             field: 'realprice',
                             title: '金额',
@@ -113,8 +121,8 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                 "0": __('inprogress'),
                                 "1": __('expired'),
                                 "2": __('paid'),
-                                "4": __('settled'),
                                 "3": __('unsettled'),
+                                "4": __('settled'),
                             },
                             formatter: Table.api.formatter.status,
                             sortable: true,
@@ -160,7 +168,11 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                         table.bootstrapTable('refresh');
                                     },
                                     hidden: function (row) {
-                                        return row.status >=2;
+                                        if(row.method == 'create'){
+                                            return true;
+                                        }else{
+                                            return row.status >=2;
+                                        }
                                     }
                                 },
                                 {
@@ -174,7 +186,11 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                         table.bootstrapTable('refresh');
                                     },
                                     hidden: function (row) {
-                                        return row.status ===0 || row.status ===1;
+                                        if(row.method == 'create'){
+                                            return true;
+                                        }else{
+                                            return row.status ===0 || row.status ===1;
+                                        }
                                     }
                                 },
                                 {
@@ -185,7 +201,11 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                     url: 'pay/order/notifyinfo/',
                                     classname: 'btn btn-warning btn-xs btn-notifyinfo',
                                     hidden: function (row) {
-                                        return row.status !==3;
+                                        if(row.method == 'create'){
+                                            return true;
+                                        }else{
+                                            return row.status !==3;
+                                        }
                                     }
                                 },
                                 {
@@ -195,7 +215,11 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                     extend: 'data-toggle="tooltip" data-placement="top"',
                                     title: '冻结订单',
                                     hidden: function (row) {
-                                        return row.freezed == 1;
+                                        if(row.method == 'create'){
+                                            return true;
+                                        }else{
+                                            return row.freezed == 1;
+                                        }
                                     }
                                 },
                                 {
@@ -210,7 +234,11 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                         table.bootstrapTable('refresh');
                                     },
                                     hidden: function (row) {
-                                        return row.freezed != 1;
+                                        if(row.method == 'create'){
+                                            return true;
+                                        }else{
+                                            return row.freezed != 1;
+                                        }
                                     }
                                 },
 
