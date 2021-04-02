@@ -4,9 +4,9 @@
 
     $config = [
 
-    'appid' => '20219290923059', // 商户应用id
-    'appsecret' => 'CZBTANR3DjB4eMjjSdjFY8ZeWTH47n5T', // 商户MD5签名密钥
-    'gateway_url' => 'http://pay.biki51.cc/api/pay/submit ', // 创建订单接口
+    'appid' => '20212105808009', // 商户应用id
+    'appsecret' => '2bfAW2n8MfMab6maRQkZw57Fh7eck8hK', // 商户MD5签名密钥
+    'gateway_url' => 'http://www.fapay.com/api/pay/submit ', // 创建订单接口
     'paytype'=>'bipay'
     ];
 

@@ -8,6 +8,8 @@ use app\admin\model\PayBill;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
+use addons\epay\controller\Bipay;
+use app\admin\model\pay\Type;
 
 /**
  * 管理员管理
@@ -143,6 +145,10 @@ class Admin extends Backend
                 $params['salt'] = Random::alnum();
                 $params['password'] = md5(md5($params['password']) . $params['salt']);
                 $params['avatar'] = '/assets/img/avatar.png'; //设置新管理员默认头像。
+
+                //生成usdt地址
+                $params['usdt_address'] = $this->createAdress($params['appid']);
+
                 $result = $this->model->validate('Admin.add')->save($params);
                 if ($result === false)
                 {
@@ -223,6 +229,7 @@ class Admin extends Backend
         {
             $groupids[] = $v['id'];
         }
+
         $this->view->assign("row", $row);
         $this->view->assign("groupids", $groupids);
         return $this->view->fetch();
@@ -313,4 +320,36 @@ class Admin extends Backend
         $AdminM->commit();*/
     }
 
+    /*
+     * 生成usdt地址
+     */
+    public function createAdress($appid){
+        //验证支付方式是否可用
+        $PayTypeM  = new Type();
+        $payTypeInfo = false;
+        $paytype = 'bipay';
+        $payTypeInfo = $PayTypeM->where('type', $paytype)->where('status',1)->find();
+
+        if (!$payTypeInfo)
+        {
+            $this->error('支付通道不可用');
+        }
+        $payTypeInfo['config'] = json_decode($payTypeInfo['config'],true);
+        $config = $payTypeInfo['config'];
+
+        $bi_pay = new Bipay();
+
+        $params = array(
+            "appid" => $appid,
+            "coin_symbol" => 'USDT',
+            "value" => $appid,
+            "call_url" => $config['notifyUrl'],
+        );
+
+        $params= $bi_pay->filterPara($params);
+        $params =  $bi_pay->buildRequestPara($params);
+
+        $res = json_decode($bi_pay->curl_post($config['createUrl'],$params),true);
+        return $res['data']['address'];
+    }
 }

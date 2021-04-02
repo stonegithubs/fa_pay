@@ -49,6 +49,8 @@ class Pay extends Frontend
             'price' => $this->request->post('price',0),
             'title' => $this->request->post('title',''),
             'out_order_id' => $this->request->post('out_order_id',''),
+            'from_address' => $this->request->post('from_address',''),
+            'to_address' => $this->request->post('to_address',''),
             'extend' => $this->request->post('extend',''),
             'returnurl' => $this->request->post('returnurl',''),
             'notifyurl' => $this->request->post('notifyurl',''),
@@ -153,6 +155,8 @@ class Pay extends Frontend
             $postData['appid'] = $data['appid'];
             $postData['out_order_id'] = $data['out_order_id'];
             $postData['title'] = $data['title'];
+            $postData['from_address'] = $data['from_address'];
+            $postData['to_address'] = $data['to_address'];
             $postData['amount'] = $data['realprice'];
             $postData['type'] = 'alipay';
             $postData['method'] = 'wap';
@@ -160,24 +164,7 @@ class Pay extends Frontend
             $postData['returnurl'] = $data['returnurl'];
 			$postData['key'] = '123';
 
-			//如果是Bipay支付方式，则根据extend中method的值跳转url
-            $gateway_url = $payTypeInfo['config']['gateway_url'];
-            if(strtolower($data['paytype']) == 'bipay'){
-                $extend = json_decode($data['extend'],true);
-
-                if(in_array($extend['method'],['create','transfer'])){
-                    $gateway_url = str_replace('submit',$extend['method'],$payTypeInfo['config']['gateway_url']);
-                }else{
-                    $this->error('非法的method');
-                }
-
-                if(!in_array($extend['coin_symbol'],['BTC','ETH','USDT'])){
-                    $this->error('非法的coin_symbol');
-                }
-
-                $postData['extend'] = $data['extend'];
-            }
-            exit(ToolReq::createForm($gateway_url, $postData));
+            exit(ToolReq::createForm($payTypeInfo['config']['gateway_url'], $postData));
         }
         $this->error('支付通道异常');
 

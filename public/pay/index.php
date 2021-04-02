@@ -9,6 +9,8 @@ if($_POST){
         'createtime' => time(), // 请求时间戳
         'price' => isset($_POST['price']) ? $_POST['price'] : 1, // 订单金额，单位元
         'title' => isset($_POST['title']) ? $_POST['title'] : 'goods', // 商品名称
+        'from_address' => isset($_POST['from_address']) ? $_POST['from_address'] : '', // 商品名称
+        'to_address' => isset($_POST['to_address']) ? $_POST['to_address'] : '', // 商品名称
         'out_order_id' => isset($_POST['out_order_id']) ? $_POST['out_order_id'] : 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
         'extend' => isset($_POST['extend']) ? $_POST['extend'] : '', // 商户自定义字段
         'returnurl' => isset($_POST['returnurl']) ? $_POST['returnurl'] : '', // 前端通知地址
@@ -27,21 +29,12 @@ if($_POST){
 
 
 $data = [
-    'price' => 10, // 订单金额，单位元
+    'price' => 0.1, // 订单金额
     'title' => 'goods', // 商品名称
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
-    'extend' => json_encode([
-            'method' => 'create',
-            'coin_symbol' => 'USDT',
-            'value' => 'CZBTANR3DjB4eMjjSdjFY8ZeWTH47n5T',
-    ]), // 商户自定义字段
-//    'extend' => json_encode([
-//        'method' => 'transfer',
-//        'coin_symbol' => 'BTC',
-//        'amount' => '123456',
-//        'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH',
-//        'withdraw_record_Id' => '123456',
-//    ]), // 商户自定义字段
+    'from_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', // 转出地址
+    'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', //   转入地址
+    'extend' => '', // 商户自定义字段
     'returnurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/returnx.php", // 前端通知地址
     'notifyurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/notifyx.php", // 异步通知地址
 ];
@@ -93,12 +86,20 @@ $data = [
                         </div>
 
                         <div class="form-group col-sm-12">
-                            <label for="input3" class="form-label control-label">订单金额（单位元）</label>
+                            <label for="input3" class="form-label control-label">订单金额</label>
                             <input type="text" name="price" value="<?=$data['price']?>" class="form-control" id="input3" placeholder="请输入订单金额..." required>
                         </div>
                         <div class="form-group col-sm-12">
                             <label for="input4" class="form-label control-label">商品名称</label>
                             <input type="text" name="title" value="<?=$data['title']?>" class="form-control" id="input4" placeholder="请输入商品金额..." required>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label for="input4" class="form-label control-label">转出地址</label>
+                            <input type="text" name="from_address" value="<?=$data['from_address']?>" class="form-control" id="input10" placeholder="usdt转出地址..." required>
+                        </div>
+                        <div class="form-group col-sm-12">
+                            <label for="input4" class="form-label control-label">转入地址</label>
+                            <input type="text" name="to_address" value="<?=$data['to_address']?>" class="form-control" id="input10" placeholder="usdt转出地址..." required>
                         </div>
                         <div class="form-group col-sm-12">
                             <label for="input5" class="form-label control-label">自定义字段</label>

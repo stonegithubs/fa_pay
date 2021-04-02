@@ -31,11 +31,7 @@ class Bipay extends Controller
     public function _initialize()
     {
         parent::_initialize();
-    }
 
-
-    public function submit()
-    {
         try {
             $logM = new Log();
             $ipaddr = ToolReq::getIp();
@@ -45,15 +41,77 @@ class Bipay extends Controller
         } catch (DbException $e) {
         }
 
-        $from_address = $this->request->request('from_address');
-        $to_address = $this->request->request('to_address');
-        $out_order_id = $this->request->request('out_order_id');
+        //验证支付方式是否可用
+        $PayTypeM  = new Type();
+        $payTypeInfo = false;
+        $paytype = 'bipay';
+        try {
+            $payTypeInfo = $PayTypeM->where('type', $paytype)->where('status',1)->find();
+        } catch (DataNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
+        } catch (DbException $e) {
+        }
+        if (!$payTypeInfo)
+        {
+            $this->error('支付通道不可用');
+        }
+        $payTypeInfo['config'] = json_decode($payTypeInfo['config'],true);
+        $this->config = $payTypeInfo['config'];
+    }
 
-        if($from_address == $to_address){
-            $this->error('转出地址和转入地址不能相同');
+    public function create()
+    {
+        $appid = $this->request->request("appid");
+        $extend = $this->request->request("extend");
+        $extend = json_decode($extend,true);
+
+        if(empty($extend['value']) || !is_string($extend['value'])){
+            $this->error('非法的value');
         }
 
-        $this->result('http://www.fapay.com/index/payment?id='.$out_order_id,1,'请求成功','json');
+        $params = array(
+            "appid" => $appid,
+            "coin_symbol" => $extend['coin_symbol'],
+            "value" => $extend['value'],
+            "call_url" => $this->config['notifyUrl'],
+        );
+
+        $params= $this->filterPara($params);
+        $params =  $this->buildRequestPara($params);
+
+        exit($this->curl_post($this->config['createUrl'],$params));
+    }
+
+    public function transfer()
+    {
+        $extend = $this->request->request("extend");
+        $extend = json_decode($extend,true);
+
+        if(empty($extend['amount'])){
+            $this->error('非法的amount');
+        }
+
+        if(empty($extend['to_address'])){
+            $this->error('非法的to_address');
+        }
+
+        if(empty($extend['withdraw_record_Id'])){
+            $this->error('非法的withdraw_record_Id');
+        }
+
+        $out_order_id = $this->request->request("out_order_id");
+
+        $params = array(
+            "coin_symbol" => $extend['coin_symbol'],
+            "amount" => $extend['amount'],
+            "to_address" => $extend['to_address'],
+            "withdraw_record_Id" => $out_order_id
+        );
+
+        $params= $this->filterPara($params);
+        $params =  $this->buildRequestPara($params);
+
+        exit($this->curl_post($this->config['transferUrl'],$params));
     }
 
 
@@ -78,6 +136,7 @@ class Bipay extends Controller
             exit(json_encode(['code'=>-1,'msg'=>'sign error']));
         }
 
+        $withdraw_record_Id = $params['withdraw_record_Id'];
         $notify_type = $params['notify_type'];
 //        $from_address= $params['from_address'];
         $to_address= $params['address'];
@@ -91,19 +150,21 @@ class Bipay extends Controller
             $OrderM = new PayOrder();
 
             //修改订单状态
+            $out_trade_no = $withdraw_record_Id;
             $myOrder = array();
+            $myOrder['sys_order_id'] = $txid;
             $myOrder['status'] = 2;//已经支付
             $myOrder['paydate'] = date('Y-m-d H:i:s',time());
             $myOrder['realprice'] = $amount;
             $myOrder['paytime'] = time();
             $where = array();
-            $where['txid'] = $txid;
+            $where['out_order_id'] = $out_trade_no;
             $where['status'] = array('in','0,1');
             $OrderM->where($where)->update($myOrder);
 
             //订单详情
             $where = array();
-            $where['txid'] = $txid;
+            $where['out_order_id'] = $out_trade_no;
             $orderInfo = $OrderM->where($where)->find();
 
             //下发商户通知
@@ -195,7 +256,7 @@ class Bipay extends Controller
     }
 
     // curl for request
-    public  function curl_post($url, $post_data = '', $timeout = 5)
+    private  function curl_post($url, $post_data = '', $timeout = 5)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
