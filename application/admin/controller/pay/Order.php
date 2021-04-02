@@ -217,7 +217,26 @@ class Order extends Backend
                 $this->error(__('You have no permission'));
             }
         }
-       
+
+        //根据txid查询交易信息
+        if(empty($row->txid)){
+            $this->error('未填写txid');
+        }
+
+        $url = 'https://services.tokenview.com/vipapi/tx/eth/'.$row->txid.'?apikey=KRBu6JFmCmXqSfFJbKRj';
+        $eth_res = json_decode(file_get_contents($url),true);
+        if($eth_res['code'] == 1){
+            if($eth_res['data']['tokenTransfer'][0]['from'] != $row['from_address']){
+                $this->error('实际转出地址与订单信息不一致');
+            }else if($eth_res['data']['tokenTransfer'][0]['to'] != $row['to_address']){
+                $this->error('实际转入地址与订单信息不一致');
+            }else if($row['price'] != ($eth_res['data']['tokenTransfer'][0]['value'] / 1000000)){
+                $this->error('实际转账金额与订单信息不一致');
+            }
+        }else{
+            $this->error('未查询到链上交易信息');
+        }
+
         if ($this->request->isPost()) {
             $result = Service::handleOrder($row['id']);
             if ($result) {
