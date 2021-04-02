@@ -32,8 +32,8 @@ $data = [
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
     'extend' => json_encode([
             'method' => 'create',
-            'coin_symbol' => 'BTC',
-            'value' => '123456',
+            'coin_symbol' => 'USDT',
+            'value' => 'CZBTANR3DjB4eMjjSdjFY8ZeWTH47n5T',
     ]), // 商户自定义字段
 //    'extend' => json_encode([
 //        'method' => 'transfer',

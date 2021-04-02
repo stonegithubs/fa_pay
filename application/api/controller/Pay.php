@@ -29,7 +29,6 @@ class Pay extends Frontend
 
     public function submit()
     {
-
         $logM = new Log();
         $logM->addLog(json_encode($this->request->param()),'api/pay/submit');
 
