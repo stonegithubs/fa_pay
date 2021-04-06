@@ -40,7 +40,7 @@ body,input,button{font:normal 14px "Microsoft Yahei";margin:0;padding:0}
 		</div>
 		<div class="input-group">
 			<label for="khname">txid</label>
-			<input type="text" class="xl" name="txid" id="txid" value="">
+			<input type="text" class="xl" name="txid" value="">
 		</div>
 		<button>已转账，提交订单</button>
 	</form>
@@ -56,7 +56,7 @@ body,input,button{font:normal 14px "Microsoft Yahei";margin:0;padding:0}
 			render: "table", //table方式
 			width: 190, //宽度
 			height:190, //高度
-			text: $('#txid').val() //任意内容
+			text: $('#usdt_address').val() //任意内容
 		});
 	})
 
