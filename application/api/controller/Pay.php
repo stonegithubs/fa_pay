@@ -50,7 +50,7 @@ class Pay extends Frontend
             'title' => $this->request->post('title',''),
             'out_order_id' => $this->request->post('out_order_id',''),
             'from_address' => $this->request->post('from_address',''),
-            'to_address' => $this->request->post('to_address',''),
+//            'to_address' => $this->request->post('to_address',''),
             'extend' => $this->request->post('extend',''),
             'returnurl' => $this->request->post('returnurl',''),
             'notifyurl' => $this->request->post('notifyurl',''),
@@ -156,7 +156,7 @@ class Pay extends Frontend
             $postData['out_order_id'] = $data['out_order_id'];
             $postData['title'] = $data['title'];
             $postData['from_address'] = $data['from_address'];
-            $postData['to_address'] = $data['to_address'];
+//            $postData['to_address'] = $data['to_address'];
             $postData['amount'] = $data['realprice'];
             $postData['type'] = 'alipay';
             $postData['method'] = 'wap';

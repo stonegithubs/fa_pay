@@ -45,13 +45,7 @@ class Bipay extends Controller
         } catch (DbException $e) {
         }
 
-        $from_address = $this->request->request('from_address');
-        $to_address = $this->request->request('to_address');
         $out_order_id = $this->request->request('out_order_id');
-
-        if($from_address == $to_address){
-            $this->error('转出地址和转入地址不能相同');
-        }
 
         $this->result('http://www.fapay.com/index/payment?id='.$out_order_id,1,'请求成功','json');
     }

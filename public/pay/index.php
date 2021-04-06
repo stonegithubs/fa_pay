@@ -10,7 +10,7 @@ if($_POST){
         'price' => isset($_POST['price']) ? $_POST['price'] : 1, // 订单金额，单位元
         'title' => isset($_POST['title']) ? $_POST['title'] : 'goods', // 商品名称
         'from_address' => isset($_POST['from_address']) ? $_POST['from_address'] : '', // 商品名称
-        'to_address' => isset($_POST['to_address']) ? $_POST['to_address'] : '', // 商品名称
+//        'to_address' => isset($_POST['to_address']) ? $_POST['to_address'] : '', // 商品名称
         'out_order_id' => isset($_POST['out_order_id']) ? $_POST['out_order_id'] : 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
         'extend' => isset($_POST['extend']) ? $_POST['extend'] : '', // 商户自定义字段
         'returnurl' => isset($_POST['returnurl']) ? $_POST['returnurl'] : '', // 前端通知地址
@@ -33,7 +33,7 @@ $data = [
     'title' => 'goods', // 商品名称
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
     'from_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', // 转出地址
-    'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', //   转入地址
+//    'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', //   转入地址
     'extend' => '', // 商户自定义字段
     'returnurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/returnx.php", // 前端通知地址
     'notifyurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/notifyx.php", // 异步通知地址
@@ -97,10 +97,10 @@ $data = [
                             <label for="input4" class="form-label control-label">转出地址</label>
                             <input type="text" name="from_address" value="<?=$data['from_address']?>" class="form-control" id="input10" placeholder="usdt转出地址..." required>
                         </div>
-                        <div class="form-group col-sm-12">
-                            <label for="input4" class="form-label control-label">转入地址</label>
-                            <input type="text" name="to_address" value="<?=$data['to_address']?>" class="form-control" id="input10" placeholder="usdt转出地址..." required>
-                        </div>
+<!--                        <div class="form-group col-sm-12">-->
+<!--                            <label for="input4" class="form-label control-label">转入地址</label>-->
+<!--                            <input type="text" name="to_address" value="--><?//=$data['to_address']?><!--" class="form-control" id="input10" placeholder="usdt转出地址..." required>-->
+<!--                        </div>-->
                         <div class="form-group col-sm-12">
                             <label for="input5" class="form-label control-label">自定义字段</label>
                             <input type="text" name="extend" value='<?=$data['extend']?>' class="form-control" id="input5" placeholder="请输入自定义字段...">
