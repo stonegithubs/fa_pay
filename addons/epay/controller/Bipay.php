@@ -47,7 +47,7 @@ class Bipay extends Controller
 
         $out_order_id = $this->request->request('out_order_id');
 
-        $this->result('http://www.fapay.com/index/payment?id='.$out_order_id,1,'请求成功','json');
+        $this->result('http://'.$_SERVER['HTTP_HOST'].'/index/payment?id='.$out_order_id,1,'请求成功','json');
     }
 
 
