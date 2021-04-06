@@ -483,7 +483,7 @@ class Pay extends Frontend
 
     //定时检测订单是否支付
     public function check_paid(){
-        $orderList = DB::table('fa_pay_order')->field('id,out_order_id,txid,from_address,to_address')->where(['status'=>0])->select();
+        $orderList = DB::table('fa_pay_order')->field('id,out_order_id,txid,from_address,to_address,price')->where(['status'=>0])->select();
 
         //循环处理
         foreach ($orderList as $k=>$v){
