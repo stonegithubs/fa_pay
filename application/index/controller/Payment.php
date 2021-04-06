@@ -67,8 +67,7 @@ class Payment extends Frontend
         }
 
         //查询txid是否已存在
-        $orderInfo = $orderM->where(['txid'=>$txid])->find();
-        if(!empty($orderInfo)){
+        if(!empty($orderM->where(['txid'=>$txid])->find())){
             $this->error('此txid已被使用');
         }
 
