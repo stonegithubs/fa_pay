@@ -71,16 +71,16 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                 css: {"color": "#e74c3c"}
                             }
                         },
-                        {
-                            field: 'rate',
-                            title: '费率（%）',
-                            operate: 'BETWEEN',
-                        },
-                        {
-                            field: 'cost',
-                            title: '手续费',
-                            operate: 'BETWEEN',
-                        },
+                        // {
+                        //     field: 'rate',
+                        //     title: '费率（%）',
+                        //     operate: 'BETWEEN',
+                        // },
+                        // {
+                        //     field: 'cost',
+                        //     title: '手续费',
+                        //     operate: 'BETWEEN',
+                        // },
                         {
                             operate: false,
                             field: 'paytype_text',

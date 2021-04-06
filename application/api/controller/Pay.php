@@ -2,6 +2,7 @@
 
 namespace app\api\controller;
 
+use app\admin\controller\pay\Order;
 use app\admin\model\pay\PayRate;
 use app\admin\model\pay\Type;
 use app\common\controller\Api;
@@ -14,7 +15,9 @@ use think\db\exception\ModelNotFoundException;
 use think\exception\DbException;
 use tool\Request as ToolReq;
 use think\Config;
+use think\Db;
 use think\Exception;
+use app\admin\library\Service;
 
 /**
  * 支付接口
@@ -478,7 +481,43 @@ class Pay extends Frontend
     }
 
 
+    //定时检测订单是否支付
+    public function check_paid(){
+        $orderList = DB::table('fa_pay_order')->field('id,out_order_id,txid,from_address,to_address')->where(['status'=>0])->select();
 
+        //循环处理
+        foreach ($orderList as $k=>$v){
+            if(!empty($v['txid'])){
+                $payConfig = Config::get("payment");
+                $url = 'https://services.tokenview.com/vipapi/tx/eth/'.$v['txid'].'?apikey='.$payConfig['sys_tokenview_key'];
+                $eth_res = json_decode(file_get_contents($url),true);
+
+                if($eth_res['code'] == 1 && !empty($eth_res['data']['tokenTransfer'])){
+                    if($eth_res['data']['tokenTransfer'][0]['from'] != $v['from_address']){
+                        echo "<br />订单号：".$v['out_order_id']."，实际转出地址与订单信息不一致";
+                    }else if($eth_res['data']['tokenTransfer'][0]['to'] != $v['to_address']){
+                        echo "<br />订单号：".$v['out_order_id']."，实际转入地址与订单信息不一致";
+                    }else if($v['price'] != ($eth_res['data']['tokenTransfer'][0]['value'] / 1000000)){
+                        echo "<br />订单号：".$v['out_order_id']."，实际转账金额与订单信息不一致";
+                    }else{
+                        //通知商户
+                        $result = Service::handleOrder($v['id']);
+
+                        if ($result) {
+                            echo "<br />订单号：".$v['out_order_id']."，收款成功";
+                        } else {
+                            echo "<br />订单号：".$v['out_order_id']."，收款失败";
+                        }
+                    }
+
+                }else{
+                    echo "<br />订单号：".$v['out_order_id']."，未查询到链上交易信息";
+                }
+            }else{
+                echo "<br />订单号：".$v['out_order_id']."，未填写txid";
+            }
+        }
+    }
 
 
 }

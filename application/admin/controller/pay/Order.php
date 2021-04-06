@@ -10,7 +10,7 @@ use app\admin\model\PayOrder;
 use app\common\controller\Backend;
 use think\Db;
 use think\Session;
-
+use think\Config;
 
 /**
  * 订单管理
@@ -223,9 +223,11 @@ class Order extends Backend
             $this->error('未填写txid');
         }
 
-        $url = 'https://services.tokenview.com/vipapi/tx/eth/'.$row->txid.'?apikey=KRBu6JFmCmXqSfFJbKRj';
+        $payConfig = Config::get("payment");
+        $url = 'https://services.tokenview.com/vipapi/tx/eth/'.$row->txid.'?apikey='.$payConfig['sys_tokenview_key'];
         $eth_res = json_decode(file_get_contents($url),true);
-        if($eth_res['code'] == 1){
+
+        if($eth_res['code'] == 1 && !empty($eth_res['data']['tokenTransfer'])){
             if($eth_res['data']['tokenTransfer'][0]['from'] != $row['from_address']){
                 $this->error('实际转出地址与订单信息不一致');
             }else if($eth_res['data']['tokenTransfer'][0]['to'] != $row['to_address']){

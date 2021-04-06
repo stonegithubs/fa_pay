@@ -71,8 +71,12 @@ class Payment extends Frontend
             $this->error('此txid已被使用');
         }
 
+        //获取商户充值地址
+        $adminM  = new Admin();
+        $adminInfo = $adminM->where('appid', $orderInfo['appid'])->find();
+
         //保存txid
-        if($orderM->where(['out_order_id'=>$id])->update(['txid'=>$txid])){
+        if($orderM->where(['out_order_id'=>$id])->update(['to_address'=>$adminInfo['usdt_address'],'txid'=>$txid])){
             header("Location:" . $orderInfo['returnurl']);
         }else{
             $this->error('提交失败');
