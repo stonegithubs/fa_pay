@@ -34,14 +34,23 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                             title: '自定义订单号',
                         },
 
-                        {field: 'appid', title: '商户ID',formatter: Table.api.formatter.search},
+                        // {field: 'appid', title: '商户ID',formatter: Table.api.formatter.search},
+                        // {
+                        //     field: 'coin_symbol',
+                        //     title: '币种',
+                        //     operate: 'BETWEEN',
+                        //     sortable: true,
+                        //     cellStyle: {
+                        //         css: {"color": "#e74c3c"}
+                        //     }
+                        // },
                         {
-                            field: 'coin_symbol',
-                            title: '币种',
+                            field: 'txid',
+                            title: '链上交易id',
                             operate: 'BETWEEN',
                             sortable: true,
                             cellStyle: {
-                                css: {"color": "#e74c3c"}
+                                css: {"color": "#3c8dbc"}
                             }
                         },
                         {

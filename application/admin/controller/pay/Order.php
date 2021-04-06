@@ -101,21 +101,21 @@ class Order extends Backend
                 ->select();
 
             $list = collection($list)->toArray();
-
-            //处理bipay
-            foreach ($list as $k=>$v){
-                $extend = json_decode($v['extend'],true);
-                if(!empty($extend['method'])){
-                    $list[$k]['method'] = $extend['method'];
-                    $list[$k]['coin_symbol'] = $extend['coin_symbol'];
-                    $list[$k]['realprice'] = 0;
-                    $list[$k]['rate'] = 0;
-                    $list[$k]['cost'] = 0;
-                    if($extend['method'] == 'transfer'){
-                        $list[$k]['realprice'] = $extend['amount'];
-                    }
-                }
-            }
+//
+//            //处理bipay
+//            foreach ($list as $k=>$v){
+//                $extend = json_decode($v['extend'],true);
+//                if(!empty($extend['method'])){
+//                    $list[$k]['method'] = $extend['method'];
+//                    $list[$k]['coin_symbol'] = $extend['coin_symbol'];
+//                    $list[$k]['realprice'] = 0;
+//                    $list[$k]['rate'] = 0;
+//                    $list[$k]['cost'] = 0;
+//                    if($extend['method'] == 'transfer'){
+//                        $list[$k]['realprice'] = $extend['amount'];
+//                    }
+//                }
+//            }
 
 
             $all_money = 0;

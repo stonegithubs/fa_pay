@@ -66,6 +66,12 @@ class Payment extends Frontend
             $this->error('订单不存在');
         }
 
+        //查询txid是否已存在
+        $orderInfo = $orderM->where(['txid'=>$txid])->find();
+        if(!empty($orderInfo)){
+            $this->error('此txid已被使用');
+        }
+
         //保存txid
         if($orderM->where(['out_order_id'=>$id])->update(['txid'=>$txid])){
             header("Location:" . $orderInfo['returnurl']);
