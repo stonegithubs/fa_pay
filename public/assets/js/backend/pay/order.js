@@ -168,11 +168,7 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                         table.bootstrapTable('refresh');
                                     },
                                     hidden: function (row) {
-                                        if(row.method == 'create'){
-                                            return true;
-                                        }else{
-                                            return row.status >=2;
-                                        }
+                                        return row.status >=2;
                                     }
                                 },
                                 {
@@ -186,11 +182,7 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                         table.bootstrapTable('refresh');
                                     },
                                     hidden: function (row) {
-                                        if(row.method == 'create'){
-                                            return true;
-                                        }else{
-                                            return row.status ===0 || row.status ===1;
-                                        }
+                                        return row.status ===0 || row.status ===1;
                                     }
                                 },
                                 {
@@ -215,11 +207,7 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                     extend: 'data-toggle="tooltip" data-placement="top"',
                                     title: '冻结订单',
                                     hidden: function (row) {
-                                        if(row.method == 'create'){
-                                            return true;
-                                        }else{
-                                            return row.freezed == 1;
-                                        }
+                                        return row.freezed == 1;
                                     }
                                 },
                                 {
@@ -234,11 +222,7 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                                         table.bootstrapTable('refresh');
                                     },
                                     hidden: function (row) {
-                                        if(row.method == 'create'){
-                                            return true;
-                                        }else{
-                                            return row.freezed != 1;
-                                        }
+                                        return row.freezed != 1;
                                     }
                                 },
 

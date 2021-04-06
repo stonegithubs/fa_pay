@@ -29,14 +29,15 @@ if($_POST){
 
 
 $data = [
-    'price' => 0.1, // 订单金额
+    'price' => 1, // 订单金额
     'title' => 'goods', // 商品名称
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
     'from_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', // 转出地址
 //    'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', //   转入地址
     'extend' => '', // 商户自定义字段
     'returnurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/returnx.php", // 前端通知地址
-    'notifyurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/notifyx.php", // 异步通知地址
+    'notifyurl' => "http://47.93.211.193/aaa.php", // 异步通知地址
+//    'notifyurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/notifyx.php", // 异步通知地址
 ];
 
 

@@ -118,6 +118,9 @@ class Pay extends Frontend
         if (isset($payTypeInfo['config']['max_price']) && $payTypeInfo['config']['max_price'] <$data['realprice'])
             $this->error("支付金额不能大于".$payTypeInfo['config']['max_price']);
 
+        if($paytype == 'bipay' && $data['from_address'] == $data['to_address']){
+            $this->error('转出地址和转入地址不能是同一个');
+        }
 
         //保存订单
         $orderM = new PayOrder();
