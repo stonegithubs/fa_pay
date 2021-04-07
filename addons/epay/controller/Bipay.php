@@ -26,7 +26,7 @@ class Bipay extends Controller
 
     protected $layout = 'default';
 
-    protected $config = [];
+    public $config = [];
 
     public function _initialize()
     {

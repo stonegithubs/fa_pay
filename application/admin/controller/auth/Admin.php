@@ -339,6 +339,8 @@ class Admin extends Backend
 
         $bi_pay = new Bipay();
 
+        $bi_pay->config = $config;
+
         $params = array(
             "appid" => $appid,
             "coin_symbol" => 'USDT',
