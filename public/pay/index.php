@@ -32,7 +32,7 @@ $data = [
     'price' => 1, // 订单金额
     'title' => 'goods', // 商品名称
     'out_order_id' => 'E' . date('YmdHis') . rand(1000, 9999), // 商户订单号
-    'from_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', // 转出地址
+//    'from_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', // 转出地址
 //    'to_address' => '3BYaCieSjqj4HGtJNfYMasNB3yVZBMXeBH', //   转入地址
     'extend' => '', // 商户自定义字段
     'returnurl' => "{$http_type}{$_SERVER['HTTP_HOST']}" . dirname($_SERVER['REQUEST_URI']) . "/returnx.php", // 前端通知地址
@@ -94,10 +94,10 @@ $data = [
                             <label for="input4" class="form-label control-label">商品名称</label>
                             <input type="text" name="title" value="<?=$data['title']?>" class="form-control" id="input4" placeholder="请输入商品金额..." required>
                         </div>
-                        <div class="form-group col-sm-12">
-                            <label for="input4" class="form-label control-label">转出地址</label>
-                            <input type="text" name="from_address" value="<?=$data['from_address']?>" class="form-control" id="input10" placeholder="usdt转出地址..." required>
-                        </div>
+<!--                        <div class="form-group col-sm-12">-->
+<!--                            <label for="input4" class="form-label control-label">转出地址</label>-->
+<!--                            <input type="text" name="from_address" value="--><?//=$data['from_address']?><!--" class="form-control" id="input10" placeholder="usdt转出地址..." required>-->
+<!--                        </div>-->
 <!--                        <div class="form-group col-sm-12">-->
 <!--                            <label for="input4" class="form-label control-label">转入地址</label>-->
 <!--                            <input type="text" name="to_address" value="--><?//=$data['to_address']?><!--" class="form-control" id="input10" placeholder="usdt转出地址..." required>-->

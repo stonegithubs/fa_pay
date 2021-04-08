@@ -493,9 +493,10 @@ class Pay extends Frontend
                 $eth_res = json_decode(file_get_contents($url),true);
 
                 if($eth_res['code'] == 1 && !empty($eth_res['data']['tokenTransfer'])){
-                    if($eth_res['data']['tokenTransfer'][0]['from'] != $v['from_address']){
-                        echo "<br />订单号：".$v['out_order_id']."，实际转出地址与订单信息不一致";
-                    }else if($eth_res['data']['tokenTransfer'][0]['to'] != $v['to_address']){
+//                    if($eth_res['data']['tokenTransfer'][0]['from'] != $v['from_address']){
+//                        echo "<br />订单号：".$v['out_order_id']."，实际转出地址与订单信息不一致";
+//                    }else
+                    if($eth_res['data']['tokenTransfer'][0]['to'] != $v['to_address']){
                         echo "<br />订单号：".$v['out_order_id']."，实际转入地址与订单信息不一致";
                     }else if($v['price'] != ($eth_res['data']['tokenTransfer'][0]['value'] / 1000000)){
                         echo "<br />订单号：".$v['out_order_id']."，实际转账金额与订单信息不一致";

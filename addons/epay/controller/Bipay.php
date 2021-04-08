@@ -49,9 +49,9 @@ class Bipay extends Controller
         $out_order_id = $this->request->request('out_order_id');
 
         //转出地址不能为空
-        if (empty($from_address)){
-            $this->error("转出地址不能为空");
-        }
+//        if (empty($from_address)){
+//            $this->error("转出地址不能为空");
+//        }
 
 
         $this->result('http://'.$_SERVER['HTTP_HOST'].'/index/payment?id='.$out_order_id,1,'请求成功','json');
