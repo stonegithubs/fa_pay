@@ -181,6 +181,7 @@ class Service
                 'out_order_id' => $order['out_order_id'],
                 'sys_order_id' => $order['sys_order_id'],
                 'realprice'    => $order['realprice'],
+                'status'      => $order['status'],
                 'paytime'      => $order['paytime'],
                 'paydate'      => $order['paydate'],
                 'extend'       => $order['extend'],
