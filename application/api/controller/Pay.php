@@ -22,7 +22,7 @@ use app\admin\library\Service;
 /**
  * 支付接口
  */
-class Pay extends Frontend
+class Pay extends Api
 {
 
 
@@ -158,19 +158,30 @@ class Pay extends Frontend
         if (!empty($paytype))
         {
 
-            $postData['appid'] = $data['appid'];
-            $postData['out_order_id'] = $data['out_order_id'];
-            $postData['title'] = $data['title'];
-            $postData['from_address'] = $data['from_address'];
+//            $postData['appid'] = $data['appid'];
+//            $postData['out_order_id'] = $data['out_order_id'];
+//            $postData['title'] = $data['title'];
+//            $postData['from_address'] = $data['from_address'];
 //            $postData['to_address'] = $data['to_address'];
-            $postData['amount'] = $data['realprice'];
-            $postData['type'] = 'alipay';
-            $postData['method'] = 'wap';
-            $postData['notifyurl'] = $data['notifyurl'];
-            $postData['returnurl'] = $data['returnurl'];
-			$postData['key'] = '123';
+//            $postData['amount'] = $data['realprice'];
+//            $postData['type'] = 'alipay';
+//            $postData['method'] = 'wap';
+//            $postData['notifyurl'] = $data['notifyurl'];
+//            $postData['returnurl'] = $data['returnurl'];
+//			$postData['key'] = '123';
+//
+//            exit(ToolReq::createForm($payTypeInfo['config']['gateway_url'], $postData));
 
-            exit(ToolReq::createForm($payTypeInfo['config']['gateway_url'], $postData));
+            try {
+                $logM = new Log();
+                $ipaddr = ToolReq::getIp();
+                $logM->addLog($ipaddr."|".json_encode($this->request->param()),'bipay/submit');
+            } catch (DataNotFoundException $e) {
+            } catch (ModelNotFoundException $e) {
+            } catch (DbException $e) {
+            }
+
+            $this->success('操作成功','http://'.$_SERVER['HTTP_HOST'].'/index/payment?id='.$data['out_order_id']);
         }
         $this->error('支付通道异常');
 

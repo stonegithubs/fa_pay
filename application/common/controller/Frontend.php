@@ -11,7 +11,7 @@ use think\Lang;
 /**
  * 前台控制器基类
  */
-class Frontend extends Controller
+class Frontend extends Api
 {
 
     /**
