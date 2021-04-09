@@ -22,7 +22,6 @@ if($_POST){
     // md5 签名
     $sign_str = Request::build_sign_str($data). $config['appsecret'];
     $data['sign'] = md5($sign_str);
-    print_r($data);die;
     exit(Request::createForm($config['gateway_url'], $data));
 
 }
