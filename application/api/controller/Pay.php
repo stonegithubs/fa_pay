@@ -22,7 +22,7 @@ use app\admin\library\Service;
 /**
  * 支付接口
  */
-class Pay extends Api
+class Pay extends Frontend
 {
 
 
@@ -181,7 +181,9 @@ class Pay extends Api
             } catch (DbException $e) {
             }
 
-            $this->success('操作成功','http://'.$_SERVER['HTTP_HOST'].'/index/payment?id='.$data['out_order_id']);
+            header("Location:" . 'http://'.$_SERVER['HTTP_HOST'].'/index/payment?id='.$data['out_order_id']);
+
+//            $this->success('操作成功','http://'.$_SERVER['HTTP_HOST'].'/index/payment?id='.$data['out_order_id']);
         }
         $this->error('支付通道异常');
 
