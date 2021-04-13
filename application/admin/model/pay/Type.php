@@ -24,7 +24,7 @@ class Type extends Model
 
     public static function getPaytypeList()
     {
-        $all = self::all();
+        $all = self::field('id,type,name,rate,status')->select();
         if ($all)
         {
             $temp = array();
