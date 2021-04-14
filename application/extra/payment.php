@@ -17,5 +17,5 @@ return array (
   'cash_cost' => '5',
   'min_cash' => '1000',
   'min_rate_sost' => '0',
-  'sys_tokenview_key' => '3Rk89IpAUt9ogwnHxiJZ',
+  'sys_tokenview_key' => 'TrbFszhsNA2QWM25vKrQ',
 );
