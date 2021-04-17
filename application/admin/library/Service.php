@@ -180,7 +180,7 @@ class Service
                 'title'       => $order['title'],
                 'out_order_id' => $order['out_order_id'],
                 'sys_order_id' => $order['sys_order_id'],
-                'realprice'    => $order['realprice'],
+                'realprice'    => $order['realprice'] * $order['exchange_rate'], //乘以汇率
                 'status'      => $order['status'],
                 'paytime'      => $order['paytime'],
                 'paydate'      => $order['paydate'],

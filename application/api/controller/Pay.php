@@ -125,6 +125,9 @@ class Pay extends Frontend
 //            $this->error('转出地址和转入地址不能是同一个');
 //        }
 
+        //汇率
+        $data['exchange_rate']=$adminInfo['exchange_rate'];
+
         //保存订单
         $orderM = new PayOrder();
         try {

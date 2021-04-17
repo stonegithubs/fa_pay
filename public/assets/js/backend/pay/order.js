@@ -63,6 +63,15 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                             }
                         },
                         {
+                            field: 'exchange_rate',
+                            title: '汇率',
+                            operate: 'BETWEEN',
+                            sortable: true,
+                            cellStyle: {
+                                css: {"color": "#3c8dbc"}
+                            }
+                        },
+                        {
                             field: 'freezed_amount',
                             title: '冻结金额',
                             operate: 'BETWEEN',

@@ -55,12 +55,16 @@ class Profile extends Backend
         if ($this->request->isPost())
         {
             $params = $this->request->post("row/a");
-            $params = array_filter(array_intersect_key($params, array_flip(array('email', 'nickname', 'password', 'avatar','appsecret','cash_pwd','new_cash_pwd'))));
+            $params = array_filter(array_intersect_key($params, array_flip(array('email', 'nickname', 'password', 'avatar','appsecret','cash_pwd','new_cash_pwd','exchange_rate'))));
             unset($v);
             if (isset($params['password']))
             {
                 $params['salt'] = Random::alnum();
                 $params['password'] = md5(md5($params['password']) . $params['salt']);
+            }
+
+            if(!is_numeric($params['exchange_rate'])||strpos($params['exchange_rate'],".")!==false){
+                $this->error('请输入正确的汇率');
             }
 
             if (isset($params['cash_pwd']) || isset($params['new_cash_pwd']))
