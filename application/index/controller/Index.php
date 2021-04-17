@@ -14,7 +14,7 @@ class Index extends Frontend
 
     public function _initialize()
     {
-        $this->redirect('/pay/');
+//        $this->redirect('/pay/');
 //        parent::_initialize();
     }
 
