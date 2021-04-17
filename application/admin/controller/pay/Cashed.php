@@ -22,6 +22,7 @@ use think\Config;
  */
 class Cashed extends Backend
 {
+    protected $noNeedRight = ['uadd'];
 
     /**
      * PayOrder模型对象
@@ -138,7 +139,12 @@ class Cashed extends Backend
         if (!$bankList)
             $bankList = array();
         $this->assign("bankList",  $bankList);
-        return $this->view->fetch();
+
+        if($this->request->request('type',1) == 1){
+            return $this->view->fetch();
+        }else{
+            return $this->view->fetch('uadd');
+        }
     }
 
     public function del($ids = "")

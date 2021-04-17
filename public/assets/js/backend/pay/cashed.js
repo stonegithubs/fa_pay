@@ -46,7 +46,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         },
                         {
                             field: 'bank_number',
-                            title: '卡号',
+                            title: '卡号/USDT地址',
                         },
                         {
                             field: 'real_name',

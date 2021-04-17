@@ -14,8 +14,8 @@ return array (
   'balance_url' => 'http://www.xhd9.com/addons/epay/api/submit',
   'sys_notifyurl' => 'http://www.xhd9.com/addons/epay/api/notifyx/paytype/alipay',
   'sys_returnurl' => 'http://www.xhd9.com/addons/epay/api/returnx/paytype/alipay',
-  'cash_cost' => '5',
-  'min_cash' => '1000',
+  'cash_cost' => '0',
+  'min_cash' => '10',
   'min_rate_sost' => '0',
   'sys_tokenview_key' => 'TrbFszhsNA2QWM25vKrQ',
 );
