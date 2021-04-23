@@ -63,8 +63,10 @@ class Profile extends Backend
                 $params['password'] = md5(md5($params['password']) . $params['salt']);
             }
 
-            if(!is_numeric($params['exchange_rate'])){
+            if(!empty($params['exchange_rate']) && !is_numeric($params['exchange_rate'])){
                 $this->error('请输入正确的汇率');
+            }else{
+                $params['exchange_rate'] = 0;
             }
 
             if (isset($params['cash_pwd']) || isset($params['new_cash_pwd']))

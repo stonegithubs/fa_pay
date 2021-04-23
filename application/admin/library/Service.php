@@ -174,7 +174,7 @@ class Service
         //如果有传递notifyurl则优先根据notifyurl的返回结果进行判断
         if ($order['notifyurl']) {
             //根据汇率计算真实价格
-            if($order['exchange_rate'] > 1){
+            if($order['exchange_rate'] > 0){
                 $realprice = $order['realprice'] * $order['exchange_rate'];
             }else{
                 //获取汇率
