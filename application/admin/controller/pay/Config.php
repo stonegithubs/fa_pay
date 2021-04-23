@@ -36,6 +36,14 @@ class Config extends Backend
     public function index()
     {
         $adminInfo = Admin::get($this->auth->id);
+
+        //获取汇率
+        $result = file_get_contents('http://webforex.hermes.hexun.com/forex/quotelist?code=FOREXUSDCNY&column=Code,Price');
+        $result = substr($result,1);
+        $result = substr($result,0,-2);
+        $json = json_decode($result,true);
+        $adminInfo['shi_exchange_rate'] = $json['Data'][0][0]['1'] / 10000;
+
         $this->view->assign('adminInfo', $adminInfo);
         return $this->view->fetch();
     }
