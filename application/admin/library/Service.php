@@ -173,14 +173,27 @@ class Service
         }
         //如果有传递notifyurl则优先根据notifyurl的返回结果进行判断
         if ($order['notifyurl']) {
-            
+            //根据汇率计算真实价格
+            if($order['exchange_rate'] > 1){
+                $realprice = $order['realprice'] * $order['exchange_rate'];
+            }else{
+                //获取汇率
+                $result = file_get_contents('http://webforex.hermes.hexun.com/forex/quotelist?code=FOREXUSDCNY&column=Code,Price');
+                $result = substr($result,1);
+                $result = substr($result,0,-2);
+                $json = json_decode($result,true);
+                $exchange_rate = $json['Data'][0][0]['1'] / 10000;
+                $realprice = $order['realprice'] * $exchange_rate;
+            }
+
+            $realprice =
             $params = [
                 'appid'       => $order['appid'],
                 'paytype'       => $order['paytype'],
                 'title'       => $order['title'],
                 'out_order_id' => $order['out_order_id'],
                 'sys_order_id' => $order['sys_order_id'],
-                'realprice'    => $order['realprice'] * $order['exchange_rate'], //乘以汇率
+                'realprice'    => $realprice, //乘以汇率
                 'status'      => $order['status'],
                 'paytime'      => $order['paytime'],
                 'paydate'      => $order['paydate'],
