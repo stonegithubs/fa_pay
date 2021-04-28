@@ -1,79 +1,140 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<title>USDT充值</title>
-<style>
-body,input,button{font:normal 14px "Microsoft Yahei";margin:0;padding:0}
-.odform-tit{font-weight:normal;font-size:25px;color:#595757;line-height:40px;text-align:center;border-bottom:1px solid #c9cacb;margin:0;padding:5% 0}
-.odform-tit img{height:40px;vertical-align:middle;margin-right:15px}
-.odform{padding:5%}
-.input-group{margin-bottom:5%;position:relative}
-.input-group label{padding:2% 0;position:absolute;color:#595757}
-.input-group input{margin-left:5em;padding:3% 5%;box-sizing:border-box;background:#efeff0;border:0;border-radius:5px;color:#595757;width:68%}
-#output{margin-left:5em;padding:3% 5%;border-radius:5px;color:#595757;width:60%}
-.odform button{background:#8ec31f;color:#fff;text-align:center;border:0;border-radius:10px;padding:3%;width:100%;font-size:16px}
-</style>
-</head>
+	<meta charset="UTF-8">
+	<title>USDT支付</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link rel="stylesheet" type="text/css" href="__CDN__/assets/css/style.css"/>
+	<link rel="stylesheet" type="text/css" media="all" href="__CDN__/assets/css/exchange.css">
 
+</head>
 <body>
-<h1 class="odform-tit"><img src="images/daetixian-tit.png" alt="">USDT充值</h1>
-<div class="odform">
-	<form id="profile-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="{:url('index/payment/submit')}">
-		<div class="input-group">
-			<label for="wdname">订单号</label>
-			<input type="text" class="xl" name="id" disabled value="{$order.out_order_id}">
-			<input type="hidden" class="xl" name="id" value="{$order.out_order_id}">
+<!--
+
+* 17素材vip建站专区模块代码
+* 详尽信息请看官网：http://www.17sucai.com/pins/vip
+*
+* Cdight , 温州易站网络科技有限公司版权所有
+*
+* 请尊重原创，未经允许请勿转载。
+* 在保留版权的前提下可应用于个人或商业用途
+
+-->
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed ">
+<!--		<a href="javascript:;" class="aui-navBar-item">-->
+<!--			<i class="icon icon-return"></i>-->
+<!--		</a>-->
+		<div class="aui-center">
+			<span class="aui-center-title">商品支付</span>
 		</div>
-		<div class="input-group">
-			<label for="khname">金额</label>
-			<input type="text" class="xl" name="price" disabled value="{$order.price}">
+		<a href="javascript:;" class="aui-navBar-item">
+<!--			<i class="icon icon-more"></i>-->
+		</a>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-apy-white">
+			<div class="divHeight"></div>
+			<div class="aui-flex b-line">
+				<div class="aui-flex-box">
+					<h2>商品名称：<em>{$order.title}</em></h2>
+				</div>
+			</div>
+			<div class="aui-flex b-line">
+				<div class="aui-flex-box">
+					<h2>商品价格：<i>{$order.price}</i></h2>
+				</div>
+			</div>
+			<div class="divHeight b-line"></div>
+			<div class="aui-flex">
+				<div class="aui-flex-box">
+					<p>请选择付款方式</p>
+				</div>
+			</div>
+			<div class="aui-apy-list">
+				<a href="javascript:;" class="aui-flex aui-current-item this-card b-line" val="1">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/coin.jpeg" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>区块链支付</h3>
+					</div>
+				</a>
+				<a href="javascript:;" class="aui-flex aui-current-item b-line" val="2">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/item_02.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>交易所支付</h3>
+					</div>
+				</a>
+			</div>
 		</div>
-		<div class="input-group">
-			<label for="khname">充值地址</label>
-			<input type="text" class="xl" name="usdt_address" id="usdt_address" disabled value="{$address}"><span id="copy" style="padding-left:15px;width:15%;">复制</span>
+
+		<input type="hidden" id="id" value="{$id}">
+
+		<div class="aui-btn">
+			<button href="#loginmodal" id="modaltrigger">确认支付</button>
 		</div>
-		<div class="input-group">
-			<label for="khname"></label>
-			<div id="output"></div>
-		</div>
-		<div class="input-group">
-			<label for="khname">txid</label>
-			<input type="text" class="xl" name="txid" value="">
-		</div>
-		<button>已转账，提交订单</button>
+
+
+	</section>
+
+</section>
+
+<div id="loginmodal" style="display:none;">
+
+	<h1>Exchange Login</h1>
+
+	<form id="loginform" name="loginform" method="post" action="{:url('index/payment/exchange')}">
+
+		<label for="username">Username:</label>
+
+		<input type="text" name="username" id="username" class="txtfield" tabindex="1">
+
+		<input type="hidden" name="id" value="{$id}">
+
+
+		<label for="password">Password:</label>
+
+		<input type="password" name="password" id="password" class="txtfield" tabindex="2">
+
+
+
+		<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Log In" tabindex="3"></div>
+
 	</form>
+
 </div>
-</body>
-</html>
+
+<script type="text/javascript" src="__CDN__/assets/js/jquery-1.9.1.min.js"></script>
 <script src="__CDN__/assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="__CDN__/assets/js/jquery.qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
-<script>
-	jQuery(function(){
-		jQuery('#output').qrcode({
-			render: "table", //table方式
-			width: 190, //宽度
-			height:190, //高度
-			text: $('#usdt_address').val() //任意内容
-		});
+<script type="text/javascript" charset="utf-8" src="__CDN__/assets/js/jquery.leanModal.min.js"></script>
+
+<script type="text/javascript">
+
+	$('.aui-current-item').click(function(e){
+		$(this).addClass('this-card').siblings().removeClass('this-card');
+		$('#type-amount').html($(this).find('.cardAmount').html());
+
+		if($(".this-card").attr('val') == 2){
+			$('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
+		}
 	})
 
+	$('.aui-btn').click(function(e){
+		var id = $('#id').val();
+
+		if($(".this-card").attr('val') == 1){
+			window.location.href = "http://" +  window.location.host + "/index/payment/chain?id="+id;
+		}
+	})
 </script>
-<script>
-	$("#copy").click(function () {
-		var text=$('#usdt_address').val();
-		copyText(text);
-	});
-	function copyText(text) {
-		var oInput = document.createElement('input');
-		oInput.value = text;
-		document.body.appendChild(oInput);
-		oInput.select(); // 选择对象
-		document.execCommand("Copy"); // 执行浏览器复制命令
-		oInput.className = 'oInput';
-		oInput.style.display='none';
-		alert('复制成功')
-	}
-</script>
+<script src="http://www.jq22.com/js/jq.js"></script>
+</body>
+</html>

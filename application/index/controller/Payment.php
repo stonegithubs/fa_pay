@@ -35,6 +35,37 @@ class Payment extends Frontend
             $this->error('此订单已提交');
         }
 
+        $this->view->assign('id', $id);
+        $this->view->assign('order', $orderInfo);
+
+        return $this->view->fetch();
+    }
+
+    public function exchange()
+    {
+        $id = $this->request->request('id');
+        $username = $this->request->request('username');
+        $password = $this->request->request('password');
+
+        print_r($username);die;
+    }
+
+    public function chain()
+    {
+        $id = $this->request->request('id');
+
+        //查询订单信息
+        $orderM = new PayOrder();
+        $orderInfo = $orderM->where(['out_order_id'=>$id])->find();
+
+        if(empty($orderInfo)){
+            $this->error('订单不存在');
+        }
+
+        if(!empty($orderInfo['txid'])){
+            $this->error('此订单已提交');
+        }
+
         //获取商户充值地址
         $adminM  = new Admin();
         $adminInfo = $adminM->where('appid', $orderInfo['appid'])->find();
