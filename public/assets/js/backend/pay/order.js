@@ -100,7 +100,10 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'table', 'echarts', 'echart
                             title: '支付通道标识',
                             formatter: Table.api.formatter.search
                         },
-
+                        {
+                            field: 'bipay_type',
+                            title: '支付方式',
+                        },
                         {
                             field: 'sys_order_id',
                             title: '系统订单号',

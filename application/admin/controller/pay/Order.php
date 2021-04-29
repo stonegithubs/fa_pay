@@ -110,11 +110,15 @@ class Order extends Backend
                 ->order($sort, $order)
                 ->select();*/
 
-            /*foreach ($all_list as $key => $item) {
-                if ($item['status'] >1) {
-                    $all_money+=$item['realprice'];
+            foreach ($list as $key => $item) {
+                $extend = json_decode($item['extend'],true);
+                if ($extend['bipay_type']  == 1) {
+                    $list[$key]['bipay_type'] = '区块链支付';
                 }
-            }*/
+                if ($extend['bipay_type']  == 2) {
+                    $list[$key]['bipay_type'] = '交易所支付';
+                }
+            }
             $all_money = $this->model
                 ->field('realprice,status')
                 ->where($where)
