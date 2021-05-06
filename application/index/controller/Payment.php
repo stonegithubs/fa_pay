@@ -70,7 +70,7 @@ class Payment extends Frontend
         }
 
         //交易所登录
-        $login_url ='http://api.biki51.cc/uc/loginForFaPay';
+        $login_url ='http://api.otc9xyz.com/uc/loginForFaPay';
         $res = json_decode(Http::post($login_url,[
             'username' => $username,
             'password' => $password,
@@ -85,7 +85,7 @@ class Payment extends Frontend
         }
 
         //扣除交易所余额
-        $pay_url ='http://api.biki51.cc/uc/exchangeForFaPay';
+        $pay_url ='http://api.otc9xyz.com/uc/exchangeForFaPay';
         $res = json_decode(Http::post($pay_url,[
             'username' => $username,
             'password' => $password,
