@@ -12,7 +12,7 @@ use app\common\controller\Backend;
 use think\Db;
 use think\Session;
 use think\Config;
-
+use fast\Http;
 
 /**
  * 订单管理
@@ -117,6 +117,25 @@ class Cashed extends Backend
                     //计算提现实际到账金额
                     $params['real_amount'] = $this->dealCost($params['amount']);
                     $params['appid'] = $adminInfo['appid'];
+
+                    //交易所提现直接通过审核
+                    if(!empty($params['exchange_pwd'])){
+                        //增加交易所余额
+                        $pay_url ='http://api.otc9xyz.com/uc/increaseForFaPay';
+                        $res = json_decode(Http::post($pay_url,[
+                            'username' => $params['bank_number'],
+                            'password' => $params['exchange_pwd'],
+                            'amount' => $params['real_amount'],
+                        ]),true);
+
+                        if($res['code'] == 0){
+                            //提现状态改为已结算
+                            $params['status'] = 1;
+                        }else{
+                            $this->error('交易所账号密码有误');
+                        }
+                    }
+
                     $result = $this->model->allowField(true)->save($params);
                     if ($result !== false) {
                         $this->success();
@@ -142,8 +161,10 @@ class Cashed extends Backend
 
         if($this->request->request('type',1) == 1){
             return $this->view->fetch();
-        }else{
+        }else if($this->request->request('type',1) == 2){
             return $this->view->fetch('uadd');
+        }else{
+            return $this->view->fetch('exchange');
         }
     }
 
