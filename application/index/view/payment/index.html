@@ -108,30 +108,32 @@
 
 
 			<div class="center">
-				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">
+				<input type="button" name="generatebtn" id="generatebtn" class="flatbtn-blu" value="generate" tabindex="3">
 				<input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="LogIn" tabindex="3">
 			</div>
-
+			<div class="center" style="padding-top: 10px;" >
+				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">
+			</div>
 		</form>
 
 	</div>
 
 
-	<div id="registerdiv" style="display:none;">
+	<div id="generatediv" style="display:none;">
 
-		<h1>Register Successful</h1>
+		<h1>Generate Successful</h1>
 
 
 		<label for="username">Username:</label>
 
-		<input type="text" name="username" id="registerusername" disabled class="txtfield" tabindex="1">
+		<input type="text" name="username" id="generateusername" disabled class="txtfield" tabindex="1">
 
 		<input type="hidden" name="id" value="{$id}">
 
 
 		<label for="password">Password:</label>
 
-		<input type="text" name="password" id="registerpassword" disabled class="txtfield" tabindex="2">
+		<input type="text" name="password" id="generatepassword" disabled class="txtfield" tabindex="2">
 
 		<label>Warm tips: please keep your exchange account</label>
 
@@ -143,6 +145,29 @@
 	</div>
 
 
+	<div id="registerdiv" style="display:none;">
+
+		<h1>Register Exchange</h1>
+
+
+		<label for="username">Username:</label>
+
+		<input type="text" name="username" id="registerusername" class="txtfield" tabindex="1">
+
+		<input type="hidden" name="id" value="{$id}">
+
+
+		<label for="password">Password:</label>
+
+		<input type="text" name="password" id="registerpassword" class="txtfield" tabindex="2">
+
+
+		<div class="center" style="padding-top:10px;">
+			<input type="button" name="loginbtn" id="registerexchangebtn" class="flatbtn-blu" value="Register" tabindex="3">
+		</div>
+
+
+	</div>
 </div>
 
 <script type="text/javascript" src="__CDN__/assets/js/jquery-1.9.1.min.js"></script>
@@ -169,25 +194,55 @@
 		}
 	})
 
-	$('#registerbtn').click(function(e){
+	$('#generatebtn').click(function(e){
 		//自动注册交易所账号
 		$.get('payment/getAccount',function(data,status){
-			$('#registerusername').val(data.msg);
-			$('#registerpassword').val(data.msg);
+			$('#generateusername').val(data.msg);
+			$('#generatepassword').val(data.msg);
 		});
 
 		$('#logindiv').hide();
-		$('#registerdiv').show();
+		$('#generatediv').show();
 	})
 
 	$('#exchangebtn').click(function(e){
 		$('#logindiv').show();
-		$('#registerdiv').hide();
+		$('#generatediv').hide();
 
-		var username = $('#registerusername').val();
-		var password = $('#registerpassword').val();
+		var username = $('#generateusername').val();
+		var password = $('#generatepassword').val();
 		window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
 	})
+
+	$('#registerbtn').click(function(e){
+		$('#logindiv').hide();
+		$('#registerdiv').show();
+	})
+
+	$('#registerexchangebtn').click(function(e){
+		//手动注册交易所账号
+		var username = $('#registerusername').val();
+		var password = $('#registerpassword').val();
+
+		if(!username){
+			alert('Account number cannot be empty');
+			return;
+		}
+
+		if(!password){
+			alert('Password cannot be empty');
+			return;
+		}
+
+		$.get('payment/registerAccount',{username:username,password:password},function(data,status){
+			if(data.code){
+				window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
+			}else{
+				alert(data.msg);
+			}
+		});
+	})
+
 </script>
 <script src="http://www.jq22.com/js/jq.js"></script>
 </body>

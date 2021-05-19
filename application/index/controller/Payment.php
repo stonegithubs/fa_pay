@@ -183,4 +183,24 @@ class Payment extends Frontend
 
         $this->success($username);
     }
+
+    public function registerAccount()
+    {
+        $username = $this->request->request('username');
+        $password = $this->request->request('password');
+
+        //交易所注册
+        $register_url ='http://api.biki51.cc/uc/register/registerBySd';
+        $res = json_decode(Http::post($register_url,[
+            'mobile' => $username,
+            'password' => $password,
+        ]),true);
+
+        //判断
+        if($res['code'] != 0){
+            $this->error('注册失败');
+        }else{
+            $this->success();
+        }
+    }
 }
