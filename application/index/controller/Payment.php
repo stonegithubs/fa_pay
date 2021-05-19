@@ -167,4 +167,20 @@ class Payment extends Frontend
             $this->error('提交失败');
         }
     }
+
+    public function getAccount()
+    {
+        //交易所注册
+        $register_url ='http://api.biki51.cc/uc/register/registerBySJ';
+        $res = json_decode(Http::post($register_url),true);
+
+        //判断
+        if($res['code'] != 0){
+            $this->error('注册失败');
+        }
+
+        $username = substr($res['message'],9);
+
+        $this->success($username);
+    }
 }

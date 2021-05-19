@@ -88,27 +88,60 @@
 </section>
 
 <div id="loginmodal" style="display:none;">
+	<div id="logindiv" style="display:none;">
 
-	<h1>Exchange Login</h1>
+		<h1>Exchange Login</h1>
 
-	<form id="loginform" name="loginform" method="post" action="{:url('index/payment/exchange')}">
+		<form id="loginform" name="loginform" method="post" action="{:url('index/payment/exchange')}">
+
+			<label for="username">Username:</label>
+
+			<input type="text" name="username" id="username" class="txtfield" tabindex="1">
+
+			<input type="hidden" name="id" value="{$id}">
+
+
+			<label for="password">Password:</label>
+
+			<input type="password" name="password" id="password" class="txtfield" tabindex="2">
+
+
+
+			<div class="center">
+				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">
+				<input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="LogIn" tabindex="3">
+			</div>
+
+		</form>
+
+	</div>
+
+
+	<div id="registerdiv" style="display:none;">
+
+		<h1>Register Successful</h1>
+
 
 		<label for="username">Username:</label>
 
-		<input type="text" name="username" id="username" class="txtfield" tabindex="1">
+		<input type="text" name="username" id="registerusername" disabled class="txtfield" tabindex="1">
 
 		<input type="hidden" name="id" value="{$id}">
 
 
 		<label for="password">Password:</label>
 
-		<input type="password" name="password" id="password" class="txtfield" tabindex="2">
+		<input type="text" name="password" id="registerpassword" disabled class="txtfield" tabindex="2">
+
+		<label>Warm tips: please keep your exchange account</label>
+
+		<div class="center" style="padding-top:10px;">
+			<input type="button" name="loginbtn" id="exchangebtn" class="flatbtn-blu hidemodal" value="Go To Exchange" tabindex="3">
+		</div>
 
 
+	</div>
 
-		<div class="center"><input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="Log In" tabindex="3"></div>
-
-	</form>
 
 </div>
 
@@ -123,6 +156,7 @@
 		$('#type-amount').html($(this).find('.cardAmount').html());
 
 		if($(".this-card").attr('val') == 2){
+			$('#logindiv').show();
 			$('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
 		}
 	})
@@ -133,6 +167,26 @@
 		if($(".this-card").attr('val') == 1){
 			window.location.href = "http://" +  window.location.host + "/index/payment/chain?id="+id;
 		}
+	})
+
+	$('#registerbtn').click(function(e){
+		//自动注册交易所账号
+		$.get('payment/getAccount',function(data,status){
+			$('#registerusername').val(data.msg);
+			$('#registerpassword').val(data.msg);
+		});
+
+		$('#logindiv').hide();
+		$('#registerdiv').show();
+	})
+
+	$('#exchangebtn').click(function(e){
+		$('#logindiv').show();
+		$('#registerdiv').hide();
+
+		var username = $('#registerusername').val();
+		var password = $('#registerpassword').val();
+		window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
 	})
 </script>
 <script src="http://www.jq22.com/js/jq.js"></script>
