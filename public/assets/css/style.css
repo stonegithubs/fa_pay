@@ -165,6 +165,7 @@ a {
 }
 
 .aui-flex {
+    height: 80px;
     display: -webkit-box;
     display: -webkit-flex;
     display: flex;
@@ -387,8 +388,10 @@ a {
 
 
 .aui-tag-logo{
-    width:45px;
+    width:60px;
+    /*
     height:45px;
+    */
     margin:0 1rem;
 }
 
