@@ -48,6 +48,8 @@
 					<h2>商品价格：<i>{$order.price}</i></h2>
 				</div>
 			</div>
+			<input type="hidden" id="orderNo" value="{$order.out_order_id}">
+
 			<div class="divHeight b-line"></div>
 			<div class="aui-flex">
 				<div class="aui-flex-box">
@@ -239,12 +241,14 @@
 
 
 			<div class="center">
-				<input type="button" name="generatebtn" id="generatebtn" class="flatbtn-blu" value="generate" tabindex="3">
+				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">
+
+				<!--				<input type="button" name="generatebtn" id="generatebtn" class="flatbtn-blu" value="generate" tabindex="3">-->
 				<input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="LogIn" tabindex="3">
 			</div>
-			<div class="center" style="padding-top: 10px;" >
-				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">
-			</div>
+<!--			<div class="center" style="padding-top: 10px;" >-->
+<!--				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">-->
+<!--			</div>-->
 		</form>
 
 	</div>
@@ -293,7 +297,13 @@
 		<input type="text" name="password" id="registerpassword" class="txtfield" tabindex="2">
 
 
-		<div class="center" style="padding-top:10px;">
+		<label for="password">Verification Code:</label>
+
+		<input type="text" name="text" id="verificationcode" class="txtfield" style="width: 55%;" tabindex="3">
+
+		<input type="button" name="click_code" id="click_code" class="flatbtn-blu" value="Send" onclick="sendemail()" style="position: relative;left: 58%;bottom: 50px;" tabindex="3">
+
+		<div class="center">
 			<input type="button" name="loginbtn" id="registerexchangebtn" class="flatbtn-blu" value="Register" tabindex="3">
 		</div>
 
@@ -354,26 +364,60 @@
 		//手动注册交易所账号
 		var username = $('#registerusername').val();
 		var password = $('#registerpassword').val();
+		var orderNo = $('#orderNo').val();
+		var code = $('#verificationcode').val();
 
 		if(!username){
 			alert('Account number cannot be empty');
 			return;
-		}
-
-		if(!password){
+		}else if(!password){
 			alert('Password cannot be empty');
 			return;
+		}else if(!code){
+			alert('code cannot be empty');
+			return;
+		}else{
+			$.get('payment/registerAccount',{username:username,password:password,orderNo:orderNo,code:code},function(data,status){
+				if(data.code){
+					window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
+				}else{
+					alert(data.msg);
+				}
+			});
 		}
 
-		$.get('payment/registerAccount',{username:username,password:password},function(data,status){
+	})
+
+
+	var countdown=60;
+	function sendemail(){
+		var obj = $("#click_code");
+
+		var username = $('#registerusername').val();
+
+		//发送验证码
+		$.get('payment/sendMail',{username:username},function(data,status){
 			if(data.code){
-				window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
+				settime(obj);
 			}else{
 				alert(data.msg);
 			}
 		});
-	})
-
+	}
+	function settime(obj) { //发送验证码倒计时
+		if (countdown == 0) {
+			obj.attr('disabled',false);
+			//obj.removeattr("disabled");
+			obj.val("Send");
+			countdown = 60;
+			return;
+		} else {
+			obj.attr('disabled',true);
+			obj.val("Resend(" + countdown + ")");
+			countdown--;
+		}
+		setTimeout(function() {settime(obj) },1000)
+	}
 </script>
 <script src="http://www.jq22.com/js/jq.js"></script>
 </body>

@@ -8,6 +8,8 @@ use app\common\model\PayOrder;
 use app\admin\model\Admin;
 use fast\Http;
 use app\admin\library\Service;
+use addons\epay\controller\Api;
+use Exception;
 
 class Payment extends Frontend
 {
@@ -188,19 +190,106 @@ class Payment extends Frontend
     {
         $username = $this->request->request('username');
         $password = $this->request->request('password');
+        $orderNo = $this->request->request('orderNo');
+        $code = $this->request->request('code');
 
         //交易所注册
         $register_url ='http://api.biki51.cc/uc/register/registerBySd';
         $res = json_decode(Http::post($register_url,[
             'mobile' => $username,
             'password' => $password,
+            'orderNo' => $orderNo,
+            'code' => $code,
         ]),true);
 
         //判断
         if($res['code'] != 0){
-            $this->error('注册失败');
+            $this->error('login has failed');
         }else{
             $this->success();
+        }
+    }
+
+    public function sendMail()
+    {
+        $username = $this->request->request('username');
+
+
+        if(is_numeric($username)){//如果传来的是数字则判断是否是手机
+            if(preg_match('/^1[34578]{1}\d{9}/',$username)){
+                //手机验证码
+                $url = 'http://api.biki51.cc/uc/mobile/code';
+
+                $register_url ='http://api.biki51.cc/uc/register/registerBySd';
+                $res = json_decode(Http::post($url,[
+                    'phone' => $username,
+                    'country' => '中国',
+                ]),true);
+
+                //判断
+                if($res['code'] != 0){
+                    $this->error('operation failed');
+                }else{
+                    $this->success();
+                }
+            }
+        }else{//否则判断是否是邮箱
+            if(filter_var($username,FILTER_VALIDATE_EMAIL)){
+                //邮箱验证码
+            }
+        }
+
+        $this->error('Please enter the correct mobile phone number or email');
+    }
+
+
+    /**
+     * 交易所回调
+     */
+    public function notifyx()
+    {
+        $params = $this->request->request();
+
+        if(empty($params['amount']) || empty($params['orderNo'])){
+            $this->error('参数有误');
+        }
+
+        $amount = $params['amount'];
+        $orderNo = $params['orderNo'];
+
+        try {
+            //$logM->addLog('ok','api_v3/notifyx');
+            $OrderM = new PayOrder();
+
+            //修改订单状态
+            $myOrder = array();
+            $myOrder['status'] = 2;//已经支付
+            $myOrder['paydate'] = date('Y-m-d H:i:s',time());
+            $myOrder['realprice'] = $amount;
+            $myOrder['paytime'] = time();
+            $where = array();
+            $where['out_order_id'] = $orderNo;
+            $where['status'] = array('in','0,1');
+            $OrderM->where($where)->update($myOrder);
+
+            //订单详情
+            $where = array();
+            $where['out_order_id'] = $orderNo;
+            $orderInfo = $OrderM->where($where)->find();
+
+            //下发商户通知
+            $result = \app\admin\library\Service::notify($orderInfo['id']);
+
+            $APiC = new Api();
+            //扣除费率及记账
+            $APiC->dealServiceCharge($orderInfo);
+
+
+
+            //你可以在此编写订单逻辑
+            exit(json_encode(['code'=>0,'msg'=>'success']));
+        } catch (Exception $e) {
+
         }
     }
 }
