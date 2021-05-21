@@ -249,7 +249,10 @@ class Payment extends Frontend
     public function notifyx()
     {
         header('Content-Type: application/json');
-        $params = $this->request->request();
+//        $params = $this->request->request();
+
+        $content = file_get_contents('php://input');
+        $params    = (array)json_decode($content, true);
 
         if(empty($params['amount']) || empty($params['orderNo'])){
             exit(json_encode(['code'=>-1,'msg'=>'参数有误']));
