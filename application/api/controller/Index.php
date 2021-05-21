@@ -56,6 +56,15 @@ class Index extends Api
             //$logM->addLog('ok','api_v3/notifyx');
             $OrderM = new PayOrder();
 
+            //订单详情
+            $where = array();
+            $where['out_order_id'] = $orderNo;
+            $orderInfo = $OrderM->where($where)->find();
+
+            if(!$orderInfo){
+                $this->error('订单不存在');
+            }
+
             //修改订单状态
             $myOrder = array();
             $myOrder['status'] = 2;//已经支付
@@ -66,11 +75,6 @@ class Index extends Api
             $where['out_order_id'] = $orderNo;
             $where['status'] = array('in','0,1');
             $OrderM->where($where)->update($myOrder);
-
-            //订单详情
-            $where = array();
-            $where['out_order_id'] = $orderNo;
-            $orderInfo = $OrderM->where($where)->find();
 
             //下发商户通知
             $result = \app\admin\library\Service::notify($orderInfo['id']);
