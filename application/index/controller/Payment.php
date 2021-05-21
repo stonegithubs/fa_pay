@@ -248,6 +248,7 @@ class Payment extends Frontend
      */
     public function notifyx()
     {
+        header('Content-Type: application/json');
         $params = $this->request->request();
 
         if(empty($params['amount']) || empty($params['orderNo'])){
