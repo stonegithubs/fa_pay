@@ -270,6 +270,10 @@ class Payment extends Frontend
                 exit(json_encode(['code'=>-1,'msg'=>'订单不存在']));
             }
 
+            if (!in_array($orderInfo['status'], [0,1])) {
+                exit(json_encode(['code'=>-1,'msg'=>'订单已支付']));
+            }
+
             //修改订单状态
             $myOrder = array();
             $myOrder['status'] = 2;//已经支付
