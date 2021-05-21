@@ -241,4 +241,58 @@ class Payment extends Frontend
 
         $this->error('Please enter the correct mobile phone number or email');
     }
+
+
+    /**
+     * 交易所回调
+     */
+    public function notifyx()
+    {
+        $params = $this->request->request();
+
+        if(empty($params['amount']) || empty($params['orderNo'])){
+            exit(json_encode(['code'=>-1,'msg'=>'参数有误']));
+        }
+
+        $amount = $params['amount'];
+        $orderNo = $params['orderNo'];
+
+        try {
+            //$logM->addLog('ok','api_v3/notifyx');
+            $OrderM = new PayOrder();
+
+            //订单详情
+            $where = array();
+            $where['out_order_id'] = $orderNo;
+            $orderInfo = $OrderM->where($where)->find();
+            if(!$orderInfo){
+                exit(json_encode(['code'=>-1,'msg'=>'订单不存在']));
+            }
+
+            //修改订单状态
+            $myOrder = array();
+            $myOrder['status'] = 2;//已经支付
+            $myOrder['paydate'] = date('Y-m-d H:i:s',time());
+            $myOrder['realprice'] = $amount;
+            $myOrder['paytime'] = time();
+            $where = array();
+            $where['out_order_id'] = $orderNo;
+            $where['status'] = array('in','0,1');
+            $OrderM->where($where)->update($myOrder);
+
+            //下发商户通知
+            $result = \app\admin\library\Service::notify($orderInfo['id']);
+
+            $APiC = new Api();
+            //扣除费率及记账
+            $APiC->dealServiceCharge($orderInfo);
+
+
+
+            //你可以在此编写订单逻辑
+            exit(json_encode(['code'=>0,'msg'=>'success']));
+        } catch (Exception $e) {
+
+        }
+    }
 }
