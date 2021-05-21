@@ -296,15 +296,19 @@
 
 		<input type="text" name="password" id="registerpassword" class="txtfield" tabindex="2">
 
+		<label for="password">Confirm password :</label>
+
+		<input type="text" name="password" id="confirmregisterpassword" class="txtfield" tabindex="3">
+
 
 		<label for="password">Verification Code:</label>
 
-		<input type="text" name="text" id="verificationcode" class="txtfield" style="width: 55%;" tabindex="3">
+		<input type="text" name="text" id="verificationcode" class="txtfield" style="width: 55%;" tabindex="4">
 
-		<input type="button" name="click_code" id="click_code" class="flatbtn-blu" value="Send" onclick="sendemail()" style="position: relative;left: 58%;bottom: 50px;" tabindex="3">
+		<input type="button" name="click_code" id="click_code" class="flatbtn-blu" value="Send" onclick="sendemail()" style="position: relative;left: 58%;bottom: 50px;" tabindex="5">
 
 		<div class="center">
-			<input type="button" name="loginbtn" id="registerexchangebtn" class="flatbtn-blu" value="Register" tabindex="3">
+			<input type="button" name="loginbtn" id="registerexchangebtn" class="flatbtn-blu" value="Register" tabindex="6">
 		</div>
 
 
@@ -364,6 +368,7 @@
 		//手动注册交易所账号
 		var username = $('#registerusername').val();
 		var password = $('#registerpassword').val();
+		var confirmpassword = $('#confirmregisterpassword').val();
 		var orderNo = $('#orderNo').val();
 		var code = $('#verificationcode').val();
 
@@ -372,6 +377,9 @@
 			return;
 		}else if(!password){
 			alert('Password cannot be empty');
+			return;
+		}else if(password != confirmpassword){
+			alert(' The two passwords are inconsistent ');
 			return;
 		}else if(!code){
 			alert('code cannot be empty');
