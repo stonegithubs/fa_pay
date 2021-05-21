@@ -298,7 +298,7 @@ class Payment extends Frontend
 
 
             //你可以在此编写订单逻辑
-            exit(json_encode(['code'=>0,'msg'=>'success']));
+            exit(json_encode(['code'=>1,'msg'=>'success']));
         } catch (Exception $e) {
 
         }
