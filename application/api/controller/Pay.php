@@ -535,4 +535,5 @@ class Pay extends Frontend
             }
         }
     }
+
 }
