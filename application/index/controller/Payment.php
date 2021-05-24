@@ -72,7 +72,7 @@ class Payment extends Frontend
         }
 
         //交易所登录
-        $login_url ='http://api.otc9xyz.com/uc/loginForFaPay';
+        $login_url ='http://api.biki51.cc/uc/loginForFaPay';
         $res = json_decode(Http::post($login_url,[
             'username' => $username,
             'password' => $password,
@@ -83,11 +83,21 @@ class Payment extends Frontend
             $this->error('登录失败');
         }
         if($res['message'] < $orderInfo['realprice']){
-            $this->error('交易所余额不足');
+            $code_url ='http://api.biki51.cc/uc/register/saveCode';
+            $res = json_decode(Http::post($code_url,[
+                'mobile' => $username,
+                'orderNo' => $orderInfo['out_order_id'],
+            ]),true);
+
+            if($res['code'] == 0){
+                $this->error('交易所余额不足',"http://biki51.cc/#/otc/trade/usdt?username=".$username."&password=".$password);
+            }else{
+                $this->error('提交失败');
+            }
         }
 
         //扣除交易所余额
-        $pay_url ='http://api.otc9xyz.com/uc/exchangeForFaPay';
+        $pay_url ='http://api.biki51.cc/uc/exchangeForFaPay';
         $res = json_decode(Http::post($pay_url,[
             'username' => $username,
             'password' => $password,
