@@ -42,7 +42,7 @@
         {if 1==2}
         <a href="__PUBLIC__" class="btn btn-grey">返回上一页</a>
         {/if}
-        
+
         {if $url}
             <a href="{$url}" class="btn btn-primary">立即跳转</a>
         {/if}
