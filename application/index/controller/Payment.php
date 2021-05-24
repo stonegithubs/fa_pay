@@ -90,7 +90,7 @@ class Payment extends Frontend
             ]),true);
 
             if($res['code'] == 0){
-                $this->error('交易所余额不足',"http://api.otc9xyz.com/#/otc/trade/usdt?username=".$username."&password=".$password);
+                $this->error('交易所余额不足',"http://www.otc9xyz.com/#/otc/trade/usdt?username=".$username."&password=".$password);
             }else{
                 $this->error('提交失败');
             }

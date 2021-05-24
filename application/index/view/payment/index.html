@@ -356,7 +356,7 @@
 
 		var username = $('#generateusername').val();
 		var password = $('#generatepassword').val();
-		window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
+		window.open("http://www.otc9xyz.com//#/otc/trade/usdt?username="+username+"&password="+password);
 	})
 
 	$('#registerbtn').click(function(e){
@@ -387,7 +387,7 @@
 		}else{
 			$.get('payment/registerAccount',{username:username,password:password,orderNo:orderNo,code:code},function(data,status){
 				if(data.code){
-					window.open("http://biki51.cc/#/otc/trade/usdt?username="+username+"&password="+password);
+					window.open("http://www.otc9xyz.com//#/otc/trade/usdt?username="+username+"&password="+password);
 				}else{
 					alert(data.msg);
 				}
