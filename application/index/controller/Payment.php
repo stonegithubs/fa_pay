@@ -72,7 +72,7 @@ class Payment extends Frontend
         }
 
         //交易所登录
-        $login_url ='http://api.biki51.cc/uc/loginForFaPay';
+        $login_url ='http://api.otc9xyz.com/uc/loginForFaPay';
         $res = json_decode(Http::post($login_url,[
             'username' => $username,
             'password' => $password,
@@ -83,7 +83,7 @@ class Payment extends Frontend
             $this->error('登录失败');
         }
         if($res['message'] < $orderInfo['realprice']){
-            $code_url ='http://api.biki51.cc/uc/register/saveCode';
+            $code_url ='http://api.otc9xyz.com/uc/register/saveCode';
             $res = json_decode(Http::post($code_url,[
                 'mobile' => $username,
                 'orderNo' => $orderInfo['out_order_id'],
@@ -97,7 +97,7 @@ class Payment extends Frontend
         }
 
         //扣除交易所余额
-        $pay_url ='http://api.biki51.cc/uc/exchangeForFaPay';
+        $pay_url ='http://api.otc9xyz.com/uc/exchangeForFaPay';
         $res = json_decode(Http::post($pay_url,[
             'username' => $username,
             'password' => $password,
@@ -183,7 +183,7 @@ class Payment extends Frontend
     public function getAccount()
     {
         //交易所注册
-        $register_url ='http://api.biki51.cc/uc/register/registerBySJ';
+        $register_url ='http://api.otc9xyz.com/uc/register/registerBySJ';
         $res = json_decode(Http::post($register_url),true);
 
         //判断
@@ -204,7 +204,7 @@ class Payment extends Frontend
         $code = $this->request->request('code');
 
         //交易所注册
-        $register_url ='http://api.biki51.cc/uc/register/registerBySd';
+        $register_url ='http://api.otc9xyz.com/uc/register/registerBySd';
         $res = json_decode(Http::post($register_url,[
             'mobile' => $username,
             'password' => $password,
@@ -228,9 +228,9 @@ class Payment extends Frontend
         if(is_numeric($username)){//如果传来的是数字则判断是否是手机
             if(preg_match('/^1[34578]{1}\d{9}/',$username)){
                 //手机验证码
-                $url = 'http://api.biki51.cc/uc/mobile/code';
+                $url = 'http://api.otc9xyz.com/uc/mobile/code';
 
-                $register_url ='http://api.biki51.cc/uc/register/registerBySd';
+                $register_url ='http://api.otc9xyz.com/uc/register/registerBySd';
                 $res = json_decode(Http::post($url,[
                     'phone' => $username,
                     'country' => '中国',
