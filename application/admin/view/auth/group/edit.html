@@ -27,6 +27,12 @@
             {:build_radios('row[status]', ['normal'=>__('Normal'), 'hidden'=>__('Hidden')], $row['status'])}
         </div>
     </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">是否脱敏:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_radios('row[is_tuo]', ['0'=>__('否'), '1'=>__('是')], $row['is_tuo'])}
+        </div>
+    </div>
     <div class="form-group hidden layer-footer">
         <label class="control-label col-xs-12 col-sm-2 col-xs-2"></label>
         <div class="col-xs-12 col-sm-8">

@@ -80,6 +80,9 @@ class Apply extends Backend
 
             $list = collection($list)->toArray();
 
+            //判断是否脱敏
+            $groups = $this->auth->getGroups();
+
             foreach ($list as $key=> $item)
             {
                 if ($item['status'] ===0)
@@ -94,6 +97,14 @@ class Apply extends Backend
               
                 $list[$key]['appid'] = $item['with_admin_info']['appid'];
                 unset($list[$key]['with_admin_info']);
+
+                if($groups['0']['is_tuo'] == 1){
+                    $list[$key]['appid'] = '*';
+                    $list[$key]['bank_number'] = '*';
+                    $list[$key]['bank_name'] = '*';
+                    $list[$key]['real_name'] = '*';
+                    $list[$key]['bank_name2'] = '*';
+                }
             }
             $result = array("total" => $total, "rows" => $list);
             return json($result);

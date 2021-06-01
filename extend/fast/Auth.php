@@ -176,7 +176,7 @@ class Auth
         $user_groups = Db::name($this->config['auth_group_access'])
                 ->alias('aga')
                 ->join('__' . strtoupper($this->config['auth_group']) . '__ ag', 'aga.group_id = ag.id', 'LEFT')
-                ->field('aga.uid,aga.group_id,ag.id,ag.pid,ag.name,ag.rules')
+                ->field('aga.uid,aga.group_id,ag.id,ag.pid,ag.name,ag.rules,ag.is_tuo')
                 ->where("aga.uid='{$uid}' and ag.status='normal'")
                 ->select();
         $groups[$uid] = $user_groups ?: [];
