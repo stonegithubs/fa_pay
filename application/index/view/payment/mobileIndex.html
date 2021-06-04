@@ -9,7 +9,59 @@
 	<meta content="telephone=no" name="format-detection"/>
 	<link rel="stylesheet" type="text/css" href="__CDN__/assets/css/style.css"/>
 	<link rel="stylesheet" type="text/css" media="all" href="__CDN__/assets/css/exchange.css">
-
+	<style>
+		.revise-div{
+			display:block;
+			width:33.3%;
+		}
+		/* .revise-div:before{
+			content: '';
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			right: 0;
+			width: 0;
+			height: 100%;
+			border-right: 1px solid #e2e2e2;
+			/* -webkit-transform: scaleZ(0.5);
+			transform: scaleZ(0.5);
+			-webkit-transform-origin: 0 100%;
+			transform-origin: 0 100%; */
+		} */
+		.b-line:after{
+			-webkit-transform: none;
+			transform: none;
+			-webkit-transform-origin:none;
+			transform-origin: none;
+		}
+		.revise-logo{
+			display:block;
+		}
+		.revise-box{
+			display:block;
+			text-align: center;
+			margin-top:20px;
+		}
+		.flex {
+			display: flex;
+			flex-direction: row;
+		}
+		
+		.between {
+			justify-content: space-between;
+		}
+		
+		.alcenter {
+			align-items: center;
+		}
+		.flex1 {
+			flex: 1 !important;
+		}
+		
+		.flex2 {
+			flex: 2 !important;
+		}
+	</style>
 </head>
 <body>
 <!--
@@ -38,171 +90,175 @@
 	<section class="aui-scrollView">
 		<div class="aui-apy-white">
 			<div class="divHeight"></div>
-			<div class="aui-flex b-line">
+			<div class="aui-flex b-line ">
 				<div class="aui-flex-box">
 					<h2>商品名称：<em>{$order.title}</em></h2>
 				</div>
 			</div>
-			<div class="aui-flex b-line">
+			<div class="aui-flex b-line ">
 				<div class="aui-flex-box">
 					<h2>商品价格：<i>{$order.price}</i></h2>
 				</div>
 			</div>
 			<input type="hidden" id="orderNo" value="{$order.out_order_id}">
 
-			<div class="divHeight b-line"></div>
+			<div class="divHeight b-line "></div>
 			<div class="aui-flex">
 				<div class="aui-flex-box">
 					<p>请选择付款方式</p>
 				</div>
 			</div>
 			<div class="aui-apy-list">
-				<a href="javascript:;" class="aui-flex aui-current-item this-card b-line" val="1">
+				<a href="javascript:;" class="aui-flex aui-current-item b-line " val="2">
 					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
-						<img src="__CDN__/assets/img/coin.jpeg" alt="">
-					</div>
-					<div class="aui-flex-box">
-						<h3>区块链支付</h3>
-					</div>
-				</a>
-				<a href="javascript:;" class="aui-flex aui-current-item b-line" val="2">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+					<div class="aui-tag-logo ">
 						<img src="__CDN__/assets/img/exchange.png" alt="">
 					</div>
 					<div class="aui-flex-box">
 						<h3>策安</h3>
 					</div>
 				</a>
-
-				<a href="https://c2c.hbg.com/zh-cn/trade/buy-usdt" target="_blank" class="aui-flex aui-current-item b-line" val="3">
+				<a href="javascript:;" class="aui-flex aui-current-item this-card b-line " val="1">
 					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
-						<img src="__CDN__/assets/img/huobi.png" alt="">
+					<div class="aui-tag-logo ">
+						<img src="__CDN__/assets/img/coin.jpeg" alt="">
 					</div>
 					<div class="aui-flex-box">
+						<h3>区块链支付</h3>
+					</div>
+				</a>
+				
+				<div class="flex alcenter between">
+				<a href="https://c2c.hbg.com/zh-cn/trade/buy-usdt" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="3">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo revise-logo">
+						<img src="__CDN__/assets/img/huobi.png" alt="">
+					</div>
+					<div class="aui-flex-box revise-box revise-box">
 						<h3>火币</h3>
 					</div>
 				</a>
 
-				<a href="https://c2c.binancezh.co/zh-CN/trade/buy/" target="_blank" class="aui-flex aui-current-item b-line" val="4">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://c2c.binancezh.co/zh-CN/trade/buy/" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="4">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/bian.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>币安</h3>
 					</div>
 				</a>
 
-				<a href="https://www.okcoin.co/" target="_blank" class="aui-flex aui-current-item b-line" val="5">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://www.okcoin.co/" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="5">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/okcoin.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>OKCOIN</h3>
 					</div>
 				</a>
-
-				<a href="https://pro.coinbase.com/" target="_blank" class="aui-flex aui-current-item b-line" val="6">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				</div>
+				<div class="flex alcenter between">
+				<a href="https://pro.coinbase.com/" target="_blank" class="aui-flex aui-current-item b-line  revise-div" val="6">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/coinbase.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>COINBASE</h3>
 					</div>
 				</a>
 
 
-				<a href="https://bitcoin.org/" target="_blank" class="aui-flex aui-current-item b-line" val="7">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://bitcoin.org/" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="7">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/bitcoin.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>BIYCOIN</h3>
 					</div>
 				</a>
 
-				<a href="https://www.dash.org/" target="_blank" class="aui-flex aui-current-item b-line" val="8">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://www.dash.org/" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="8">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/dash.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>DASH</h3>
 					</div>
 				</a>
-
-				<a href="https://coincheck.com/exchange" target="_blank" class="aui-flex aui-current-item b-line" val="9">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				</div>
+				<div class="flex alcenter between">
+				<a href="https://coincheck.com/exchange" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="9">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/coincheck.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>COINCHECK</h3>
 					</div>
 				</a>
 
-				<a href="https://coins.co.th/" target="_blank" class="aui-flex aui-current-item b-line" val="10">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://coins.co.th/" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="10">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/coins.co.th.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>COINS.CO.TH</h3>
 					</div>
 				</a>
 
-				<a href="https://crex24.com/zh/exchange/LTC-BTC" target="_blank" class="aui-flex aui-current-item b-line" val="11">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://crex24.com/zh/exchange/LTC-BTC" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="11">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/crex24.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>CREX24</h3>
 					</div>
 				</a>
-
-				<a href="https://localbitcoins.com/buy_bitcoins" target="_blank" class="aui-flex aui-current-item b-line" val="12">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				</div>
+				<div class="flex alcenter between">
+				<a href="https://localbitcoins.com/buy_bitcoins" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="12">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/localbitcoins.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>LOCALBITCOINS</h3>
 					</div>
 				</a>
 
-				<a href="https://www.novadax.com/en" target="_blank" class="aui-flex aui-current-item b-line" val="13">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://www.novadax.com/en" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="13">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/novadax.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>NOVADAX</h3>
 					</div>
 				</a>
 
-				<a href="https://wallofcoins.com/en/orders/?adHash=zi8N6qK" target="_blank" class="aui-flex aui-current-item b-line" val="14">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				<a href="https://wallofcoins.com/en/orders/?adHash=zi8N6qK" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="14">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/wallofcoins.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>WALLOFCOINS</h3>
 					</div>
 				</a>
-
-				<a href="https://mixpay.com/cn/platform" target="_blank" class="aui-flex aui-current-item b-line" val="15">
-					<div><i class="icon icon-df"></i></div>
-					<div class="aui-tag-logo">
+				</div>
+				<a href="https://mixpay.com/cn/platform" target="_blank" class="aui-flex aui-current-item b-line revise-div" val="15">
+					<!-- <div><i class="icon icon-df"></i></div> -->
+					<div class="aui-tag-logo revise-logo">
 						<img src="__CDN__/assets/img/mix.png" alt="">
 					</div>
-					<div class="aui-flex-box">
+					<div class="aui-flex-box revise-box">
 						<h3>MIX</h3>
 					</div>
 				</a>
