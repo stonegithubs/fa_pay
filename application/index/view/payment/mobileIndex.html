@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>USDT支付</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport"/>
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+	<meta content="telephone=no" name="format-detection"/>
+	<link rel="stylesheet" type="text/css" href="__CDN__/assets/css/style.css"/>
+	<link rel="stylesheet" type="text/css" media="all" href="__CDN__/assets/css/exchange.css">
+
+</head>
+<body>
+<!--
+
+* 17素材vip建站专区模块代码
+* 详尽信息请看官网：http://www.17sucai.com/pins/vip
+*
+* Cdight , 温州易站网络科技有限公司版权所有
+*
+* 请尊重原创，未经允许请勿转载。
+* 在保留版权的前提下可应用于个人或商业用途
+
+-->
+<section class="aui-flexView">
+	<header class="aui-navBar aui-navBar-fixed ">
+<!--		<a href="javascript:;" class="aui-navBar-item">-->
+<!--			<i class="icon icon-return"></i>-->
+<!--		</a>-->
+		<div class="aui-center">
+			<span class="aui-center-title">商品支付</span>
+		</div>
+		<a href="javascript:;" class="aui-navBar-item">
+<!--			<i class="icon icon-more"></i>-->
+		</a>
+	</header>
+	<section class="aui-scrollView">
+		<div class="aui-apy-white">
+			<div class="divHeight"></div>
+			<div class="aui-flex b-line">
+				<div class="aui-flex-box">
+					<h2>商品名称：<em>{$order.title}</em></h2>
+				</div>
+			</div>
+			<div class="aui-flex b-line">
+				<div class="aui-flex-box">
+					<h2>商品价格：<i>{$order.price}</i></h2>
+				</div>
+			</div>
+			<input type="hidden" id="orderNo" value="{$order.out_order_id}">
+
+			<div class="divHeight b-line"></div>
+			<div class="aui-flex">
+				<div class="aui-flex-box">
+					<p>请选择付款方式</p>
+				</div>
+			</div>
+			<div class="aui-apy-list">
+				<a href="javascript:;" class="aui-flex aui-current-item this-card b-line" val="1">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/coin.jpeg" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>区块链支付</h3>
+					</div>
+				</a>
+				<a href="javascript:;" class="aui-flex aui-current-item b-line" val="2">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/exchange.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>策安</h3>
+					</div>
+				</a>
+
+				<a href="https://c2c.hbg.com/zh-cn/trade/buy-usdt" target="_blank" class="aui-flex aui-current-item b-line" val="3">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/huobi.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>火币</h3>
+					</div>
+				</a>
+
+				<a href="https://c2c.binancezh.co/zh-CN/trade/buy/" target="_blank" class="aui-flex aui-current-item b-line" val="4">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/bian.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>币安</h3>
+					</div>
+				</a>
+
+				<a href="https://www.okcoin.co/" target="_blank" class="aui-flex aui-current-item b-line" val="5">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/okcoin.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>OKCOIN</h3>
+					</div>
+				</a>
+
+				<a href="https://pro.coinbase.com/" target="_blank" class="aui-flex aui-current-item b-line" val="6">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/coinbase.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>COINBASE</h3>
+					</div>
+				</a>
+
+
+				<a href="https://bitcoin.org/" target="_blank" class="aui-flex aui-current-item b-line" val="7">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/bitcoin.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>BIYCOIN</h3>
+					</div>
+				</a>
+
+				<a href="https://www.dash.org/" target="_blank" class="aui-flex aui-current-item b-line" val="8">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/dash.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>DASH</h3>
+					</div>
+				</a>
+
+				<a href="https://coincheck.com/exchange" target="_blank" class="aui-flex aui-current-item b-line" val="9">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/coincheck.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>COINCHECK</h3>
+					</div>
+				</a>
+
+				<a href="https://coins.co.th/" target="_blank" class="aui-flex aui-current-item b-line" val="10">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/coins.co.th.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>COINS.CO.TH</h3>
+					</div>
+				</a>
+
+				<a href="https://crex24.com/zh/exchange/LTC-BTC" target="_blank" class="aui-flex aui-current-item b-line" val="11">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/crex24.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>CREX24</h3>
+					</div>
+				</a>
+
+				<a href="https://localbitcoins.com/buy_bitcoins" target="_blank" class="aui-flex aui-current-item b-line" val="12">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/localbitcoins.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>LOCALBITCOINS</h3>
+					</div>
+				</a>
+
+				<a href="https://www.novadax.com/en" target="_blank" class="aui-flex aui-current-item b-line" val="13">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/novadax.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>NOVADAX</h3>
+					</div>
+				</a>
+
+				<a href="https://wallofcoins.com/en/orders/?adHash=zi8N6qK" target="_blank" class="aui-flex aui-current-item b-line" val="14">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/wallofcoins.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>WALLOFCOINS</h3>
+					</div>
+				</a>
+
+				<a href="https://mixpay.com/cn/platform" target="_blank" class="aui-flex aui-current-item b-line" val="15">
+					<div><i class="icon icon-df"></i></div>
+					<div class="aui-tag-logo">
+						<img src="__CDN__/assets/img/mix.png" alt="">
+					</div>
+					<div class="aui-flex-box">
+						<h3>MIX</h3>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<input type="hidden" id="id" value="{$id}">
+
+		<div class="aui-btn">
+			<button href="#loginmodal" id="modaltrigger">确认支付</button>
+		</div>
+
+
+	</section>
+
+</section>
+
+<div id="loginmodal" style="display:none;">
+	<div id="logindiv" style="display:none;">
+
+		<h1>Exchange Login</h1>
+
+		<form id="loginform" name="loginform" method="post" action="{:url('index/payment/exchange')}">
+
+			<label for="username">Username:</label>
+
+			<input type="text" name="username" id="username" class="txtfield" tabindex="1">
+
+			<input type="hidden" name="id" value="{$id}">
+
+
+			<label for="password">Password:</label>
+
+			<input type="password" name="password" id="password" class="txtfield" tabindex="2">
+
+
+
+			<div class="center">
+				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">
+
+				<!--				<input type="button" name="generatebtn" id="generatebtn" class="flatbtn-blu" value="generate" tabindex="3">-->
+				<input type="submit" name="loginbtn" id="loginbtn" class="flatbtn-blu hidemodal" value="LogIn" tabindex="3">
+			</div>
+<!--			<div class="center" style="padding-top: 10px;" >-->
+<!--				<input type="button" name="registerbtn" id="registerbtn" class="flatbtn-blu" value="register" tabindex="3">-->
+<!--			</div>-->
+		</form>
+
+	</div>
+
+
+	<div id="generatediv" style="display:none;">
+
+		<h1>Generate Successful</h1>
+
+
+		<label for="username">Username:</label>
+
+		<input type="text" name="username" id="generateusername" disabled class="txtfield" tabindex="1">
+
+		<input type="hidden" name="id" value="{$id}">
+
+
+		<label for="password">Password:</label>
+
+		<input type="text" name="password" id="generatepassword" disabled class="txtfield" tabindex="2">
+
+		<label>Warm tips: please keep your exchange account</label>
+
+		<div class="center" style="padding-top:10px;">
+			<input type="button" name="loginbtn" id="exchangebtn" class="flatbtn-blu hidemodal" value="Go To Exchange" tabindex="3">
+		</div>
+
+
+	</div>
+
+
+	<div id="registerdiv" style="display:none;">
+
+		<h1>Register Exchange</h1>
+
+
+		<label for="username">Username:</label>
+
+		<input type="text" name="username" id="registerusername" class="txtfield" tabindex="1">
+
+		<input type="hidden" name="id" value="{$id}">
+
+
+		<label for="password">Password:</label>
+
+		<input type="text" name="password" id="registerpassword" class="txtfield" tabindex="2">
+
+		<label for="password">Confirm password :</label>
+
+		<input type="text" name="password" id="confirmregisterpassword" class="txtfield" tabindex="3">
+
+
+		<label for="password">Verification Code:</label>
+
+		<input type="text" name="text" id="verificationcode" class="txtfield" style="width: 55%;" tabindex="4">
+
+		<input type="button" name="click_code" id="click_code" class="flatbtn-blu" value="Send" onclick="sendemail()" style="position: relative;left: 58%;bottom: 50px;" tabindex="5">
+
+		<div class="center">
+			<input type="button" name="loginbtn" id="registerexchangebtn" class="flatbtn-blu" value="Register" tabindex="6">
+		</div>
+
+
+	</div>
+</div>
+
+<script type="text/javascript" src="__CDN__/assets/js/jquery-1.9.1.min.js"></script>
+<script src="__CDN__/assets/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="__CDN__/assets/js/jquery.leanModal.min.js"></script>
+
+<script type="text/javascript">
+
+	$('.aui-current-item').click(function(e){
+		$(this).addClass('this-card').siblings().removeClass('this-card');
+		$('#type-amount').html($(this).find('.cardAmount').html());
+
+		if($(".this-card").attr('val') == 2){
+			$('#logindiv').show();
+			$('#modaltrigger').leanModal({ top: 110, overlay: 0.45, closeButton: ".hidemodal" });
+		}
+	})
+
+	$('#lean_overlay').click(function(){
+		$('#logindiv').hide();
+		$('#generatediv').hide();
+		$('#registerdiv').hide();
+	})
+
+	$('.aui-btn').click(function(e){
+		var id = $('#id').val();
+
+		if($(".this-card").attr('val') == 1){
+			window.location.href = "http://" +  window.location.host + "/index/payment/chain?id="+id;
+		}
+	})
+
+	$('#generatebtn').click(function(e){
+		//自动注册交易所账号
+		$.get('payment/getAccount',function(data,status){
+			$('#generateusername').val(data.msg);
+			$('#generatepassword').val(data.msg);
+		});
+
+		$('#logindiv').hide();
+		$('#generatediv').show();
+	})
+
+	$('#exchangebtn').click(function(e){
+		$('#logindiv').show();
+		$('#generatediv').hide();
+
+		var username = $('#generateusername').val();
+		var password = $('#generatepassword').val();
+		window.open("http://www.otc9xyz.com//#/otc/trade/usdt?username="+username+"&password="+password);
+	})
+
+	$('#registerbtn').click(function(e){
+		$('#logindiv').hide();
+		$('#registerdiv').show();
+	})
+
+	$('#registerexchangebtn').click(function(e){
+		//手动注册交易所账号
+		var username = $('#registerusername').val();
+		var password = $('#registerpassword').val();
+		var confirmpassword = $('#confirmregisterpassword').val();
+		var orderNo = $('#orderNo').val();
+		var code = $('#verificationcode').val();
+
+		if(!username){
+			alert('Account number cannot be empty');
+			return;
+		}else if(!password){
+			alert('Password cannot be empty');
+			return;
+		}else if(password != confirmpassword){
+			alert(' The two passwords are inconsistent ');
+			return;
+		}else if(!code){
+			alert('code cannot be empty');
+			return;
+		}else{
+			$.get('payment/registerAccount',{username:username,password:password,orderNo:orderNo,code:code},function(data,status){
+				if(data.code){
+					window.open("http://www.otc9xyz.com//#/otc/trade/usdt?username="+username+"&password="+password);
+				}else{
+					alert(data.msg);
+				}
+			});
+		}
+
+	})
+
+
+	var countdown=60;
+	function sendemail(){
+		var obj = $("#click_code");
+
+		var username = $('#registerusername').val();
+
+		//发送验证码
+		$.get('payment/sendMail',{username:username},function(data,status){
+			if(data.code){
+				settime(obj);
+			}else{
+				alert(data.msg);
+			}
+		});
+	}
+	function settime(obj) { //发送验证码倒计时
+		if (countdown == 0) {
+			obj.attr('disabled',false);
+			//obj.removeattr("disabled");
+			obj.val("Send");
+			countdown = 60;
+			return;
+		} else {
+			obj.attr('disabled',true);
+			obj.val("Resend(" + countdown + ")");
+			countdown--;
+		}
+		setTimeout(function() {settime(obj) },1000)
+	}
+</script>
+<script src="http://www.jq22.com/js/jq.js"></script>
+</body>
+</html>

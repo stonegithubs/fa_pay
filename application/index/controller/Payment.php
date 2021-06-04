@@ -42,7 +42,12 @@ class Payment extends Frontend
         $this->view->assign('id', $id);
         $this->view->assign('order', $orderInfo);
 
-        return $this->view->fetch();
+        //判断手机端还是PC端
+        if(isMobile()){
+            return $this->view->fetch('mobileIndex');
+        }else{
+            return $this->view->fetch('index');
+        }
     }
 
     public function exchange()
@@ -143,7 +148,12 @@ class Payment extends Frontend
         $this->view->assign('address', $adminInfo['usdt_address']);
         $this->view->assign('order', $orderInfo);
 
-        return $this->view->fetch();
+        //判断手机端还是PC端
+        if(isMobile()){
+            return $this->view->fetch('mobileChain');
+        }else{
+            return $this->view->fetch('chain');
+        }
     }
 
     public function submit()

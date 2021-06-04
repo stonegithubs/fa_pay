@@ -1,0 +1,147 @@
+.flex {
+	display: flex;
+	flex-direction: row;
+}
+
+.between {
+	justify-content: space-between;
+}
+
+.alcenter {
+	align-items: center;
+}
+.flex1 {
+	flex: 1 !important;
+}
+
+.flex2 {
+	flex: 2 !important;
+}
+
+
+
+.payment{
+	width:1000px;
+	margin:30px auto;
+	padding:20px 20px ;
+	border:1px solid #999999;
+	border-radius:20px;
+}
+.payFrom{
+	padding:20px 0px ;
+	border-bottom:1px solid #999999;
+}
+.payFrom .item{
+	margin:20px 0 0 0;
+}
+.payFrom .item .lab{
+	font-size:18px;
+}
+.payFrom .item input{
+	border: none;
+	background-color:transparent;
+	font-size:18px;
+	width:800px;
+}
+.payFrom .item .red{
+	color: red;
+}
+
+.payment .hder{
+		height:50px;
+	    /* background-color: #333333; */
+		text-align: center;
+		margin: 0 auto;
+}
+.payment .hder .text{
+	height:50px;
+	line-height: 50px;
+	font-size: 18px;
+	color: #333333;
+	text-align: left;
+}
+.payment .con{
+	/* width:960px; */
+	padding:10px 0;
+	/* background-color:#282828; */
+	margin: 0 auto;
+}
+.payList{
+	/* background-color: #282828; */
+}
+.payList .box{
+	margin: 10px 10px;
+	padding: 10px 0 0 0;
+	/* background-color: #363636; */
+	border:2px solid #999999;
+	border-radius:6px;
+}
+.payList .box:hover{
+	cursor:pointer;
+}
+.payList .clk{
+	border:2px solid #00FF00;
+}
+.payList img{
+	width:auto;
+	height:50px;
+	margin: 0 auto;
+}
+.payList span{
+	display: block;
+	font-size:16px;
+	text-align: center;
+	padding:10px 0;
+	margin-top:20px;
+	color:#FFFFFF;
+	background-color:#999999;
+}
+
+.btnbox{
+	
+}
+.btnbox .btn{
+	display: block;
+	width:900px;
+	height: 50px;
+	line-height: 50px;
+	padding: 0 18px;
+	background-color: #EAB300;
+	color: #fff;
+	white-space: nowrap;
+	text-align: center;
+	font-size: 20px;
+	border-radius: 6px;
+	cursor: pointer;
+	margin: 0 auto;
+	margin-top: 30px;
+	border:none;
+}
+
+
+.title{
+	font-size:20px;
+	font-weight:bold;
+	border-bottom:1px solid #999999;
+	padding:10px 0;
+}
+
+.payFrom .item .txid{
+	padding:5px 10px;
+	outline:1px solid #999999;
+	font-size:18px;
+}
+.payFrom .item .txid:focus {
+	padding:5px 10px;
+	outline: 1px solid #51c9ff;//边框不用border，用outline
+	background: rgba(3, 16, 28, 0);//背景色
+  }
+.copy{
+	display:block;
+	cursor:pointer;
+	margin:0 10px;
+	background-color: #333333;
+	padding:5px 10px;
+	color: #DEEBF3;
+	border-radius:5px;
+}

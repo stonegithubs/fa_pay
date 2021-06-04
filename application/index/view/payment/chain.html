@@ -1,79 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<title>USDT充值</title>
-<style>
-body,input,button{font:normal 14px "Microsoft Yahei";margin:0;padding:0}
-.odform-tit{font-weight:normal;font-size:25px;color:#595757;line-height:40px;text-align:center;border-bottom:1px solid #c9cacb;margin:0;padding:5% 0}
-.odform-tit img{height:40px;vertical-align:middle;margin-right:15px}
-.odform{padding:5%}
-.input-group{margin-bottom:5%;position:relative}
-.input-group label{padding:2% 0;position:absolute;color:#595757}
-.input-group input{margin-left:5em;padding:3% 5%;box-sizing:border-box;background:#efeff0;border:0;border-radius:5px;color:#595757;width:68%}
-#output{margin-left:5em;padding:3% 5%;border-radius:5px;color:#595757;width:60%}
-.odform button{background:#8ec31f;color:#fff;text-align:center;border:0;border-radius:10px;padding:3%;width:100%;font-size:16px}
-</style>
-</head>
+	<head>
+		<meta charset="utf-8">
+		<title>USDT充值</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" type="text/css" href="__CDN__/assets/css/paybase.css"/>
+		<link rel="stylesheet" type="text/css" href="__CDN__/assets/css/payindex.css"/>
+	</head>
+	<body>
 
-<body>
-<h1 class="odform-tit"><img src="images/daetixian-tit.png" alt="">USDT充值</h1>
-<div class="odform">
-	<form id="profile-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="{:url('index/payment/submit')}">
-		<div class="input-group">
-			<label for="wdname">订单号</label>
-			<input type="text" class="xl" name="id" disabled value="{$order.out_order_id}">
-			<input type="hidden" class="xl" name="id" value="{$order.out_order_id}">
-		</div>
-		<div class="input-group">
-			<label for="khname">金额</label>
-			<input type="text" class="xl" name="price" disabled value="{$order.price}">
-		</div>
-		<div class="input-group">
-			<label for="khname">充值地址</label>
-			<input type="text" class="xl" name="usdt_address" id="usdt_address" disabled value="{$address}"><span id="copy" style="padding-left:15px;width:15%;">复制</span>
-		</div>
-		<div class="input-group">
-			<label for="khname"></label>
-			<div id="output"></div>
-		</div>
-		<div class="input-group">
-			<label for="khname">txid</label>
-			<input type="text" class="xl" name="txid" value="">
-		</div>
-		<button>已转账，提交订单</button>
-	</form>
-</div>
-</body>
+	<div class="payment">
+		<form method="POST" action="{:url('index/payment/submit')}">
+		<div class="payFrom" style="border: none;">
+				<div class="title">
+					USDT充值
+				</div>
+
+				<div class="item flex alcenter">
+					<div class="lab">订单号：</div>
+					<div><input type="text"  name="id" value="{$order.out_order_id}" disabled="disabled" ></div>
+					<input type="hidden" class="xl" name="id" value="{$order.out_order_id}">
+				</div>
+				<div class="item flex alcenter">
+					<div class="lab">金额：</div>
+					<div><input type="text"  name="price" value="{$order.price}" disabled="disabled" ></div>
+				</div>
+				<div class="item flex alcenter">
+					<div class="lab">充值地址：</div>
+					<div><input type="text"  name="usdt_address" id="usdt_address" value="{$address}" disabled="disabled" ></div>
+				</div>
+				<div class="item flex alcenter">
+					<div class="lab">txid：</div>
+					<div><input type="text"  name="txid" value="" class="txid" id="txid"></div>
+					<div class="copy" onclick="copy()">复制</div>
+				</div>
+				<div class="item flex alcenter" style="margin-top:50px;">
+					<div class="lab">二维码：</div>
+					<div id="Article-content"></div>
+				</div>
+			</div>
+			<div class="btnbox">
+				<button  class="btn">已转账，提交订单</button>
+			</div>
+		</form>
+
+	</div>
+	</body>
+	<script src="__CDN__/assets/js/jquery-1.10.2.min.js"></script>
+	<script src="__CDN__/assets/js/jquery.qrcode.js" type="text/javascript"></script>
+	<script src="__CDN__/assets/js/utf.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function(){
+			init();
+		})
+		function init() {
+			//Article-content 为显示二维码的div id
+			$("#Article-content").qrcode({
+					 render : "canvas",    //设置渲染方式，有table和canvas，使用canvas方式渲染性能相对来说比较好
+					 text: $('#usdt_address').val(),    //扫描二维码后显示的内容,可以直接填一个网址，扫描二维码后自动跳向该链接
+					 width : "200",               //二维码的宽度
+					 height : "200",              //二维码的高度
+					 background : "#ffffff",       //二维码的后景色
+					 foreground : "#000000",        //二维码的前景色
+					 // src: './images/wallofcoins.png'             //二维码中间的图片
+			 });
+		}
+		function copy() {
+			var Url2=document.getElementById("txid");
+			Url2.select(); // 选择对象
+			document.execCommand("Copy"); // 执行浏览器复制命令
+			alert("已复制好，可贴粘。");
+		}
+
+	</script>
 </html>
-<script src="__CDN__/assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="__CDN__/assets/js/jquery.qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>
-<script>
-	jQuery(function(){
-		jQuery('#output').qrcode({
-			render: "table", //table方式
-			width: 190, //宽度
-			height:190, //高度
-			text: $('#usdt_address').val() //任意内容
-		});
-	})
-
-</script>
-<script>
-	$("#copy").click(function () {
-		var text=$('#usdt_address').val();
-		copyText(text);
-	});
-	function copyText(text) {
-		var oInput = document.createElement('input');
-		oInput.value = text;
-		document.body.appendChild(oInput);
-		oInput.select(); // 选择对象
-		document.execCommand("Copy"); // 执行浏览器复制命令
-		oInput.className = 'oInput';
-		oInput.style.display='none';
-		alert('复制成功')
-	}
-</script>
