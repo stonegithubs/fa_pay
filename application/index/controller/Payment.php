@@ -85,7 +85,7 @@ class Payment extends Frontend
 
         //判断
         if($res['code'] != 0){
-            $this->error('登录失败');
+            $this->error('账号不存在或密码错误');
         }
         if($res['message'] < $orderInfo['realprice']){
             $code_url ='http://api.otc9xyz.com/uc/register/saveCode';
